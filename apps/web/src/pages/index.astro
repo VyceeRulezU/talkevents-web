@@ -1,0 +1,66 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Section from '@/components/ui/Section.astro';
+import Hero from '@/components/sections/Hero.astro';
+import ServiceGrid from '@/components/sections/ServiceGrid.astro';
+import ProcessSteps from '@/components/sections/ProcessSteps.astro';
+import FeaturedWork from '@/components/sections/FeaturedWork.astro';
+import Testimonial from '@/components/sections/Testimonial.astro';
+import LogoStrip from '@/components/sections/LogoStrip.astro';
+import JournalTeaser from '@/components/sections/JournalTeaser.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+---
+
+<BaseLayout
+  title="Talk Events — Abuja Event Coordination & Planning"
+  description="Talk Events plans and coordinates weddings, corporate events and celebrations in Abuja. Your plan, perfectly executed."
+  path="/"
+  transparentHeader
+>
+  <Hero />
+
+  <Section id="services" ariaLabel="Our services">
+    <Container>
+      <ServiceGrid />
+    </Container>
+  </Section>
+
+  <Section tint ariaLabel="How we work">
+    <Container>
+      <ProcessSteps />
+    </Container>
+  </Section>
+
+  <Section ariaLabel="Featured work">
+    <Container>
+      <FeaturedWork />
+    </Container>
+  </Section>
+
+  <Section dark ariaLabel="Testimonial" class="section--flush">
+    <Testimonial />
+  </Section>
+
+  <Section ariaLabel="Partners">
+    <Container>
+      <LogoStrip />
+    </Container>
+  </Section>
+
+  <Section tint ariaLabel="From the journal">
+    <Container>
+      <JournalTeaser />
+    </Container>
+  </Section>
+
+  <Section dark ariaLabel="Plan your event" class="section--flush">
+    <CtaBand />
+  </Section>
+</BaseLayout>
+
+<style>
+  :global(.section--flush) {
+    padding-block: 0;
+  }
+</style>

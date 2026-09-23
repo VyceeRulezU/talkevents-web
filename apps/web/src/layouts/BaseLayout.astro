@@ -1,0 +1,53 @@
+---
+import '@fontsource/tinos/400.css';
+import '@fontsource/tinos/700.css';
+import '@fontsource/arimo/400.css';
+import '@fontsource/arimo/500.css';
+import '@fontsource/arimo/700.css';
+import '@fontsource/mrs-saint-delafield/400.css';
+
+import '@/styles/tokens.css';
+import '@/styles/base.css';
+import '@/styles/layout.css';
+import '@/styles/utilities.css';
+
+import Seo from '@/components/seo/Seo.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import SkipLink from '@/components/layout/SkipLink.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppFab from '@/components/layout/WhatsAppFab.astro';
+import { organizationSchema, websiteSchema } from '@/lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  image?: string;
+  noindex?: boolean;
+  /** True for pages with a full-bleed hero directly under the header. */
+  transparentHeader?: boolean;
+}
+
+const { title, description, path, image, noindex, transparentHeader = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-NG">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo title={title} description={description} path={path} image={image} noindex={noindex} />
+    <JsonLd schema={organizationSchema()} />
+    <JsonLd schema={websiteSchema()} />
+  </head>
+  <body>
+    <SkipLink />
+    <Header transparent={transparentHeader} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsAppFab />
+  </body>
+</html>

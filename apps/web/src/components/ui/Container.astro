@@ -1,0 +1,14 @@
+---
+interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  width?: 'default' | 'narrow' | 'wide';
+  class?: string;
+}
+
+const { as: Tag = 'div', width = 'default', class: className } = Astro.props;
+const widthClass = width === 'narrow' ? 'container--narrow' : width === 'wide' ? 'container--wide' : '';
+---
+
+<Tag class:list={['container', widthClass, className]}>
+  <slot />
+</Tag>

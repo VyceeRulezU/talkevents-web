@@ -1,0 +1,226 @@
+/* ==========================================================================
+   Talk Events — Design Tokens
+   Single source of truth. Vanilla CSS custom properties only.
+   Rules: never hard-code a colour, size, radius, shadow, z-index or duration
+   in a component — reference a token. Add new tokens here first.
+   Naming:  --{category}-{role}-{variant}   e.g. --color-brand-primary
+   Brand colours sampled from the supplied logo variants (blue #1A3870,
+   green #7ED958, ink #1B1B1B). Contrast ratios noted where they matter.
+   ========================================================================== */
+
+:root {
+  /* ---------- 1. COLOUR: PRIMITIVES (do not use directly in components) --- */
+  --palette-blue-950: #0E2044;
+  --palette-blue-900: #142C5A;
+  --palette-blue-800: #1A3870;   /* brand primary (logo background) */
+  --palette-blue-700: #244A8F;
+  --palette-blue-600: #3A63A8;
+  --palette-blue-100: #DCE5F4;
+  --palette-blue-50:  #EEF2F9;
+
+  --palette-green-700: #256B14;  /* 6.58:1 on white — safe for text */
+  --palette-green-600: #2A7A17;  /* 5.39:1 on white — safe for text */
+  --palette-green-500: #7ED958;  /* brand accent (logo mark) */
+  --palette-green-400: #98E276;
+  --palette-green-100: #E4F7DA;
+
+  --palette-ink-950: #0B0B0B;
+  --palette-ink-900: #1B1B1B;    /* logo ink / dark surface */
+  --palette-ink-800: #2A2A2A;
+  --palette-ink-600: #4B5160;
+  --palette-ink-500: #5A5F6B;    /* 6.39:1 on white */
+  --palette-ink-300: #C9CDD6;
+  --palette-ink-200: #E3E6EC;
+  --palette-ink-100: #F1F3F7;
+  --palette-ink-50:  #F8F9FB;
+  --palette-white:   #FFFFFF;
+  --palette-black:   #000000;    /* sample footer is pure black */
+
+  --palette-red-600:   #C62828;
+  --palette-amber-600: #B45309;
+
+  /* ---------- 2. COLOUR: SEMANTIC (use these) ---------------------------- */
+  --color-brand-primary:        var(--palette-blue-800);
+  --color-brand-primary-hover:  var(--palette-blue-700);
+  --color-brand-accent:         var(--palette-green-500);   /* FILLS & dark-surface text only */
+  --color-brand-accent-hover:   var(--palette-green-400);
+  --color-brand-accent-text:    var(--palette-green-600);   /* accent as text on light */
+
+  --color-text-strong:   var(--palette-ink-900);
+  --color-text-default:  var(--palette-ink-800);
+  --color-text-muted:    var(--palette-ink-500);
+  --color-text-on-dark:  var(--palette-white);
+  --color-text-on-dark-muted: rgb(255 255 255 / 0.78);
+  --color-text-on-accent: var(--palette-ink-900);           /* 9.8:1 on green */
+  --color-text-link:     var(--palette-blue-800);
+  --color-text-link-hover: var(--palette-blue-700);
+
+  --color-surface-page:     var(--palette-white);
+  --color-surface-subtle:   var(--palette-ink-50);
+  --color-surface-tint:     var(--palette-blue-50);
+  --color-surface-inverse:  var(--palette-black);           /* footer */
+  --color-surface-dark:     var(--palette-ink-900);
+  --color-surface-brand:    var(--palette-blue-800);
+  --color-surface-card:     var(--palette-white);
+
+  --color-border-subtle:  var(--palette-ink-200);
+  --color-border-default: var(--palette-ink-300);
+  --color-border-strong:  var(--palette-ink-900);
+  --color-border-on-dark: rgb(255 255 255 / 0.55);          /* outline buttons on imagery */
+
+  --color-focus-ring: var(--palette-blue-700);
+  --color-focus-ring-on-dark: var(--palette-green-500);
+
+  --color-feedback-success: var(--palette-green-600);
+  --color-feedback-error:   var(--palette-red-600);         /* 5.62:1 on white */
+  --color-feedback-warning: var(--palette-amber-600);
+  --color-feedback-info:    var(--palette-blue-700);
+
+  /* Image overlays (sample: dark scrim over hero + service tiles) */
+  --overlay-hero:  linear-gradient(180deg, rgb(11 11 11 / 0.55) 0%, rgb(11 11 11 / 0.25) 40%, rgb(11 11 11 / 0.65) 100%);
+  --overlay-tile:  linear-gradient(180deg, rgb(11 11 11 / 0.05) 35%, rgb(11 11 11 / 0.72) 100%);
+  --overlay-band:  rgb(20 44 90 / 0.72);                    /* brand-tinted CTA band */
+  --overlay-testimonial: rgb(14 32 68 / 0.70);
+
+  /* ---------- 3. TYPOGRAPHY ---------------------------------------------- */
+  /* Fonts mirror the design sample: serif display, grotesque sans body,
+     signature-script accent. Self-host via fontsource (see design-system.md). */
+  --font-display: "Tinos", "Times New Roman", Times, serif;
+  --font-body:    "Arimo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-script:  "Mrs Saint Delafield", "Segoe Script", cursive;   /* decorative only, never body */
+
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-bold:    700;
+
+  /* Fluid scale — min @360px, max @1440px. Ratio ≈ 1.2–1.25 */
+  --text-2xs:  0.6875rem;                                      /* 11px tracked eyebrow */
+  --text-xs:   0.8125rem;                                      /* 13px */
+  --text-sm:   0.9375rem;                                      /* 15px */
+  --text-base: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);       /* 16→17 */
+  --text-lg:   clamp(1.125rem, 1.06rem + 0.3vw, 1.3125rem);
+  --text-xl:   clamp(1.375rem, 1.24rem + 0.6vw, 1.75rem);
+  --text-2xl:  clamp(1.75rem, 1.5rem + 1.1vw, 2.375rem);
+  --text-3xl:  clamp(2.125rem, 1.7rem + 1.9vw, 3.25rem);
+  --text-4xl:  clamp(2.625rem, 1.9rem + 3.2vw, 4.5rem);        /* hero */
+  --text-script: clamp(3rem, 2.2rem + 3.6vw, 5.5rem);          /* script accent needs to run large */
+
+  --leading-tight:   1.15;
+  --leading-snug:    1.3;
+  --leading-normal:  1.6;    /* sans body */
+  --leading-relaxed: 1.75;   /* serif body / long-form */
+
+  --tracking-tight:  -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.08em;
+  --tracking-eyebrow: 0.28em; /* sample eyebrows: "WHAT WE DO" */
+
+  --measure-narrow: 45ch;
+  --measure-prose:  68ch;     /* keep line length < 80 chars */
+
+  /* ---------- 4. SPACING (4px base) -------------------------------------- */
+  --space-0:  0;
+  --space-1:  0.25rem;   /* 4  */
+  --space-2:  0.5rem;    /* 8  */
+  --space-3:  0.75rem;   /* 12 */
+  --space-4:  1rem;      /* 16 */
+  --space-5:  1.5rem;    /* 24 */
+  --space-6:  2rem;      /* 32 */
+  --space-7:  3rem;      /* 48 */
+  --space-8:  4rem;      /* 64 */
+  --space-9:  6rem;      /* 96 */
+  --space-10: 8rem;      /* 128 */
+
+  --section-padding-block: clamp(var(--space-8), 4rem + 4vw, var(--space-10));
+  --stack-gap: var(--space-5);
+
+  /* ---------- 5. LAYOUT --------------------------------------------------- */
+  --container-max:    75rem;    /* 1200 — sample content ≈ 1040–1200 */
+  --container-narrow: 46rem;
+  --container-wide:   90rem;
+  --gutter: clamp(var(--space-4), 0.5rem + 3vw, var(--space-7));
+  --grid-gap: var(--space-4);   /* sample tile grid uses a tight gap */
+
+  --header-height: 4.5rem;
+  --header-height-scrolled: 3.75rem;
+
+  /* Breakpoints (CSS can't read vars in @media — keep literals in sync.
+     Mobile-first: min-width only.) */
+  --bp-sm: 30rem;    /* 480 */
+  --bp-md: 48rem;    /* 768 */
+  --bp-lg: 64rem;    /* 1024 */
+  --bp-xl: 80rem;    /* 1280 */
+
+  /* ---------- 6. SHAPE ---------------------------------------------------- */
+  /* Sample language: square tiles/cards, pill outline buttons. */
+  --radius-none: 0;
+  --radius-sm:   0.25rem;
+  --radius-md:   0.5rem;     /* form fields */
+  --radius-pill: 999px;      /* buttons */
+  --radius-circle: 50%;
+
+  --border-width: 1px;
+  --border-width-strong: 2px;
+
+  /* Shadows are rare in the sample; keep restrained. */
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px rgb(11 11 11 / 0.08);
+  --shadow-md: 0 8px 24px rgb(11 11 11 / 0.12);
+  --shadow-hero-card: 0 24px 60px rgb(11 11 11 / 0.28);
+
+  /* ---------- 7. MOTION --------------------------------------------------- */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 500ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out:      cubic-bezier(0, 0, 0.2, 1);
+
+  /* ---------- 8. ELEVATION / Z-INDEX ------------------------------------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-header: 100;
+  --z-floating: 200;      /* WhatsApp button */
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  /* ---------- 9. COMPONENT-LEVEL ALIASES --------------------------------- */
+  --tap-target-min: 2.75rem;         /* 44px — WCAG 2.5.5 / mobile */
+  --button-height: 3rem;
+  --button-padding-inline: var(--space-6);
+  --field-height: 3rem;
+  --aspect-tile: 3 / 4;              /* service tiles (portrait) */
+  --aspect-hero: 16 / 9;
+  --aspect-gallery: 4 / 5;
+  --aspect-og: 1200 / 630;
+}
+
+/* ==========================================================================
+   Dark surfaces — apply .surface-dark (or data-surface="dark") to any section
+   that sits on imagery, brand blue or black. Text/borders/focus swap tokens
+   so components need no dark-specific CSS.
+   ========================================================================== */
+.surface-dark,
+[data-surface="dark"] {
+  --color-text-strong:  var(--palette-white);
+  --color-text-default: var(--color-text-on-dark);
+  --color-text-muted:   var(--color-text-on-dark-muted);
+  --color-text-link:    var(--palette-green-500);
+  --color-text-link-hover: var(--palette-green-400);
+  --color-border-default: var(--color-border-on-dark);
+  --color-focus-ring: var(--color-focus-ring-on-dark);
+  --color-brand-accent-text: var(--palette-green-500);
+  color: var(--color-text-default);
+}
+
+/* ==========================================================================
+   Reduced motion — global safety net. Components must still not rely on
+   motion to convey state.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0.01ms;
+    --duration-base: 0.01ms;
+    --duration-slow: 0.01ms;
+  }
+}

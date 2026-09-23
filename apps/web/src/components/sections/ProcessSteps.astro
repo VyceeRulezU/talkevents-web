@@ -1,0 +1,53 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+const steps = [
+  { title: 'Discover', body: 'A free consultation to understand your vision, guest count and budget.' },
+  { title: 'Plan', body: 'A transparent proposal, timeline and vendor shortlist you approve.' },
+  { title: 'Coordinate', body: 'We book, brief and manage every vendor so nothing is left to chance.' },
+  { title: 'Deliver', body: 'A dedicated day-of team runs the event to the run-of-show, calmly.' },
+];
+---
+
+<SectionHeading eyebrow="How we work" heading="A calm, organised process" level="h2" />
+
+<ol role="list" class="process-steps">
+  {steps.map((step, index) => (
+    <li class="process-step">
+      <span class="process-step__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+      <h3 class="process-step__title">{step.title}</h3>
+      <p class="process-step__body">{step.body}</p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .process-steps {
+    margin-block-start: var(--space-7);
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .process-step__number {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    color: var(--color-brand-accent-text);
+    margin-block-end: var(--space-2);
+  }
+
+  .process-step__title {
+    margin-block-end: var(--space-2);
+  }
+
+  .process-step__body {
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 48rem) {
+    .process-steps {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

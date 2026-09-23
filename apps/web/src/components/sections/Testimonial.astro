@@ -1,0 +1,61 @@
+---
+import PlaceholderMedia from '@/components/ui/PlaceholderMedia.astro';
+
+// Never fabricate testimonials — replace once the client shares
+// consented quotes (docs/open-questions.md #16).
+---
+
+<div class="testimonial">
+  <div class="testimonial__media">
+    <PlaceholderMedia label="Placeholder" />
+  </div>
+  <blockquote class="testimonial__quote">
+    <p>&ldquo;{'{{PLACEHOLDER: client testimonial, with consent}}'}&rdquo;</p>
+    <footer>{'{{PLACEHOLDER: client name, event type}}'}</footer>
+  </blockquote>
+</div>
+
+<style>
+  .testimonial {
+    position: relative;
+    min-height: 22rem;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .testimonial__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .testimonial__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--overlay-testimonial);
+  }
+
+  .testimonial__quote {
+    position: relative;
+    z-index: var(--z-raised);
+    margin: 0 auto;
+    max-width: var(--container-narrow);
+    padding: var(--space-6) var(--gutter);
+    text-align: center;
+    color: var(--color-text-on-dark);
+  }
+
+  .testimonial__quote p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-xl);
+    line-height: var(--leading-relaxed);
+    margin-block-end: var(--space-4);
+  }
+
+  .testimonial__quote footer {
+    font-size: var(--text-sm);
+    color: var(--color-text-on-dark-muted);
+  }
+</style>

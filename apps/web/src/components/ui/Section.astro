@@ -1,0 +1,19 @@
+---
+interface Props {
+  id?: string;
+  dark?: boolean;
+  tint?: boolean;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const { id, dark = false, tint = false, ariaLabel, class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['section', dark && 'surface-dark', tint && 'surface-tint', className]}
+  aria-label={ariaLabel}
+>
+  <slot />
+</section>

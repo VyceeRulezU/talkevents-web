@@ -1,0 +1,55 @@
+---
+import Button from '@/components/ui/Button.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import PlaceholderMedia from '@/components/ui/PlaceholderMedia.astro';
+import { primaryCta } from '@/data/site';
+---
+
+<div class="cta-band">
+  <div class="cta-band__media">
+    <PlaceholderMedia label="Placeholder" tone="ink" />
+  </div>
+  <div class="cta-band__content">
+    <Eyebrow>Ready when you are</Eyebrow>
+    <h2 class="cta-band__heading">Let&rsquo;s plan your event</h2>
+    <Button href={primaryCta.href} variant="outline">{primaryCta.label}</Button>
+  </div>
+</div>
+
+<style>
+  .cta-band {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 20rem;
+    overflow: hidden;
+  }
+
+  .cta-band__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .cta-band__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--overlay-band);
+  }
+
+  .cta-band__content {
+    position: relative;
+    z-index: var(--z-raised);
+    text-align: center;
+    color: var(--color-text-on-dark);
+    padding-inline: var(--gutter);
+  }
+
+  .cta-band__heading {
+    margin-block-end: var(--space-5);
+  }
+
+  .cta-band__content :global(.button--outline) {
+    color: var(--color-text-on-dark);
+  }
+</style>

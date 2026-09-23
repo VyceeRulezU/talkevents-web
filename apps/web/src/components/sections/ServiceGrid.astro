@@ -1,0 +1,121 @@
+---
+import PlaceholderMedia from '@/components/ui/PlaceholderMedia.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+// Candidate services per PRD §10 FR-S3 — [CONFIRM] with client before launch.
+const services = [
+  {
+    title: 'Wedding planning & coordination',
+    href: '/services/wedding-planning',
+    summary: 'Introduction, traditional and white wedding — planned and run end to end.',
+  },
+  {
+    title: 'Corporate events & conferences',
+    href: '/services/corporate-events',
+    summary: 'Conferences, launches and staff events delivered to spec, on schedule.',
+  },
+  {
+    title: 'Birthdays & milestone celebrations',
+    href: '/services/birthdays-and-celebrations',
+    summary: 'Milestone birthdays, naming ceremonies and family celebrations, done right.',
+  },
+];
+---
+
+<div class="service-grid-heading">
+  <SectionHeading eyebrow="What we do" heading="Our Services" scriptWord="Services" />
+</div>
+
+<ul role="list" class="service-grid">
+  {services.map((service) => (
+    <li class="service-tile">
+      <a href={service.href} class="service-tile__link">
+        <div class="service-tile__media">
+          <PlaceholderMedia label="Placeholder" tone="ink" />
+        </div>
+        <div class="service-tile__content">
+          <h3 class="service-tile__title">{service.title}</h3>
+          <p class="service-tile__summary">{service.summary}</p>
+          <span class="service-tile__cta">Read more</span>
+        </div>
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .service-grid-heading {
+    margin-block-end: var(--space-6);
+  }
+
+  .service-grid {
+    display: grid;
+    gap: var(--grid-gap);
+    grid-template-columns: 1fr;
+  }
+
+  .service-tile__link {
+    position: relative;
+    display: block;
+    aspect-ratio: var(--aspect-tile);
+    text-decoration: none;
+    color: var(--color-text-on-dark);
+    overflow: hidden;
+  }
+
+  .service-tile__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .service-tile__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--overlay-tile);
+  }
+
+  .service-tile__content {
+    position: relative;
+    z-index: var(--z-raised);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: var(--space-5);
+  }
+
+  .service-tile__title {
+    font-size: var(--text-lg);
+    margin-block-end: var(--space-2);
+  }
+
+  .service-tile__summary {
+    font-size: var(--text-sm);
+    color: var(--color-text-on-dark-muted);
+    margin-block-end: var(--space-3);
+  }
+
+  .service-tile__cta {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .service-tile__link:hover .service-tile__cta {
+    color: var(--color-brand-accent);
+  }
+
+  @media (min-width: 30rem) {
+    .service-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .service-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

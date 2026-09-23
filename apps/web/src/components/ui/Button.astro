@@ -1,0 +1,85 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'accent' | 'outline' | 'text';
+  type?: 'button' | 'submit';
+  class?: string;
+}
+
+const { href, variant = 'primary', type = 'button', class: className } = Astro.props;
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  href={href}
+  type={!href ? type : undefined}
+  class:list={['button', `button--${variant}`, className]}
+>
+  <slot />
+</Tag>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--tap-target-min);
+    height: var(--button-height);
+    padding-inline: var(--button-padding-inline);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-decoration: none;
+    white-space: nowrap;
+    border: var(--border-width) solid transparent;
+    transition: background-color var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard),
+      border-color var(--duration-base) var(--ease-standard);
+  }
+
+  .button--primary {
+    background: var(--color-brand-primary);
+    color: var(--color-text-on-dark);
+  }
+
+  .button--primary:hover {
+    background: var(--color-brand-primary-hover);
+  }
+
+  .button--accent {
+    background: var(--color-brand-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  .button--accent:hover {
+    background: var(--color-brand-accent-hover);
+  }
+
+  .button--outline {
+    background: transparent;
+    color: var(--color-text-on-dark);
+    border-color: var(--color-border-on-dark);
+  }
+
+  .button--outline:hover {
+    background: rgb(255 255 255 / 0.12);
+  }
+
+  .button--text {
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-text-link);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .button--text:hover {
+    color: var(--color-text-link-hover);
+  }
+</style>

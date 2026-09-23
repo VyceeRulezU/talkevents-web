@@ -1,0 +1,122 @@
+/* Reset & element defaults — tokens only, see design-system.md */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+  }
+
+  ul[role='list'],
+  ol[role='list'] {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  img,
+  picture,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--color-surface-page);
+    color: var(--color-text-default);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    min-height: 100dvh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-text-strong);
+    line-height: var(--leading-tight);
+    font-weight: var(--font-weight-regular);
+  }
+
+  h1 {
+    font-size: var(--text-4xl);
+  }
+
+  h2 {
+    font-size: var(--text-3xl);
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+  }
+
+  a {
+    text-decoration-thickness: from-font;
+  }
+
+  a:not([class]) {
+    color: var(--color-text-link);
+  }
+
+  a:not([class]):hover {
+    color: var(--color-text-link-hover);
+  }
+
+  :focus-visible {
+    outline: var(--border-width-strong) solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-brand-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  main {
+    display: block;
+  }
+}

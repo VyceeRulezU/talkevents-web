@@ -1,0 +1,279 @@
+---
+import { primaryCta, primaryNav, site } from '@/data/site';
+
+interface Props {
+  /** Start transparent over a full-bleed hero and solidify on scroll. Off for pages with no hero. */
+  transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
+const currentPath = new URL(Astro.request.url).pathname;
+---
+
+<header class:list={['header', !transparent && 'header--solid']} data-header>
+  <div class="header__inner container">
+    <a href="/" class="header__logo" aria-label={`${site.name} — home`}>
+      <img
+        class="header__logo-img header__logo-img--dark"
+        src="/brand/reference/talkevents-logo-on-dark.png"
+        alt={site.name}
+        width="160"
+        height="40"
+      />
+      <img
+        class="header__logo-img header__logo-img--light"
+        src="/brand/reference/talkevents-logo-on-white.png"
+        alt={site.name}
+        width="160"
+        height="40"
+      />
+    </a>
+
+    <nav class="header__nav" aria-label="Primary">
+      <ul role="list" class="header__nav-list">
+        {primaryNav.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="header__nav-link"
+              aria-current={currentPath === link.href ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a href={primaryCta.href} class="header__cta button button--accent">{primaryCta.label}</a>
+
+    <details class="header__mobile-nav">
+      <summary class="header__mobile-toggle" aria-label="Menu">
+        <svg class="icon-menu" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </summary>
+      <div class="header__mobile-panel">
+        <ul role="list" class="header__mobile-list">
+          {primaryNav.map((link) => (
+            <li>
+              <a href={link.href} class="header__mobile-link">{link.label}</a>
+            </li>
+          ))}
+        </ul>
+        <a href={primaryCta.href} class="button button--primary header__mobile-cta">{primaryCta.label}</a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector('[data-header]');
+  if (header) {
+    const onScroll = () => {
+      header.classList.toggle('header--scrolled', window.scrollY > 8);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  // Close the mobile menu when a link inside it is followed.
+  const mobileNav = document.querySelector('.header__mobile-nav');
+  mobileNav?.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'A' && mobileNav instanceof HTMLDetailsElement) {
+      mobileNav.open = false;
+    }
+  });
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--z-header);
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    background: transparent;
+    transition: background-color var(--duration-base) var(--ease-standard),
+      height var(--duration-base) var(--ease-standard);
+  }
+
+  .header--scrolled,
+  .header--solid {
+    height: var(--header-height-scrolled);
+    background: var(--color-surface-page);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    height: 100%;
+  }
+
+  .header__logo {
+    display: inline-flex;
+    align-items: center;
+    margin-inline-end: auto;
+  }
+
+  .header__logo-img {
+    height: 2rem;
+    width: auto;
+  }
+
+  .header__logo-img--light {
+    display: none;
+  }
+
+  .header--scrolled .header__logo-img--dark,
+  .header--solid .header__logo-img--dark {
+    display: none;
+  }
+
+  .header--scrolled .header__logo-img--light,
+  .header--solid .header__logo-img--light {
+    display: block;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .header__nav-list {
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  .header__nav-link {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    color: var(--color-text-on-dark);
+    padding-block: var(--space-2);
+    border-block-end: var(--border-width-strong) solid transparent;
+  }
+
+  .header--scrolled .header__nav-link,
+  .header--solid .header__nav-link {
+    color: var(--color-text-default);
+  }
+
+  .header__nav-link:hover,
+  .header__nav-link[aria-current='page'] {
+    color: var(--color-brand-accent-text);
+  }
+
+  .header--scrolled .header__nav-link:hover,
+  .header--scrolled .header__nav-link[aria-current='page'],
+  .header--solid .header__nav-link:hover,
+  .header--solid .header__nav-link[aria-current='page'] {
+    border-block-end-color: var(--color-brand-accent-text);
+  }
+
+  .header__cta {
+    display: none;
+  }
+
+  .header__mobile-nav {
+    margin-inline-start: auto;
+  }
+
+  .header__mobile-nav[open] {
+    position: fixed;
+    inset: 0;
+  }
+
+  .header__mobile-toggle {
+    list-style: none;
+    display: grid;
+    place-items: center;
+    width: var(--tap-target-min);
+    height: var(--tap-target-min);
+    color: var(--color-text-on-dark);
+    cursor: pointer;
+  }
+
+  .header--scrolled .header__mobile-toggle,
+  .header--solid .header__mobile-toggle {
+    color: var(--color-text-default);
+  }
+
+  .header__mobile-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .icon-close {
+    display: none;
+  }
+
+  .header__mobile-nav[open] .icon-menu {
+    display: none;
+  }
+
+  .header__mobile-nav[open] .icon-close {
+    display: block;
+  }
+
+  .header__mobile-toggle svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .header__mobile-panel {
+    display: none;
+  }
+
+  .header__mobile-nav[open] .header__mobile-panel {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset-block-start: var(--header-height);
+    inset-inline: 0;
+    inset-block-end: 0;
+    background: var(--color-surface-page);
+    padding: var(--space-6) var(--gutter);
+    overflow-y: auto;
+  }
+
+  .header__mobile-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .header__mobile-link {
+    display: block;
+    padding-block: var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    text-decoration: none;
+    color: var(--color-text-strong);
+    border-block-end: var(--border-width) solid var(--color-border-subtle);
+  }
+
+  .header__mobile-cta {
+    margin-block-start: auto;
+    width: 100%;
+  }
+
+  @media (min-width: 64rem) {
+    .header__nav {
+      display: block;
+    }
+
+    .header__cta {
+      display: inline-flex;
+    }
+
+    .header__mobile-nav {
+      display: none;
+    }
+  }
+</style>

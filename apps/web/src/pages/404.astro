@@ -1,0 +1,49 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Section from '@/components/ui/Section.astro';
+import Button from '@/components/ui/Button.astro';
+---
+
+<BaseLayout
+  title="Page not found — Talk Events"
+  description="This page could not be found. Return to the Talk Events homepage."
+  path="/404"
+  noindex
+>
+  <Section>
+    <Container width="narrow" class="not-found">
+      <p class="not-found__eyebrow">404</p>
+      <h1>We couldn&rsquo;t find that page</h1>
+      <p>
+        The page you're looking for may have moved. Head back home or get in touch and we'll point
+        you in the right direction.
+      </p>
+      <div class="not-found__actions">
+        <Button href="/">Back to home</Button>
+        <Button href="/contact" variant="text">Contact us</Button>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  :global(.not-found) {
+    text-align: center;
+    padding-block: var(--space-9);
+  }
+
+  .not-found__eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    color: var(--color-brand-accent-text);
+    margin-block-end: var(--space-3);
+  }
+
+  .not-found__actions {
+    margin-block-start: var(--space-6);
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+</style>

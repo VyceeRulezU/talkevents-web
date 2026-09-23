@@ -1,0 +1,50 @@
+---
+import PlaceholderMedia from '@/components/ui/PlaceholderMedia.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+const items = [1, 2, 3, 4];
+---
+
+<SectionHeading eyebrow="Recent work" heading="Featured events" level="h2" />
+
+<ul role="list" class="featured-work">
+  {items.map((item) => (
+    <li class="featured-work__item">
+      <PlaceholderMedia label={`Event ${item}`} />
+    </li>
+  ))}
+</ul>
+
+<p class="featured-work__link">
+  <a href="/portfolio">View the full portfolio</a>
+</p>
+
+<style>
+  .featured-work {
+    margin-block-start: var(--space-7);
+    display: grid;
+    gap: var(--grid-gap);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .featured-work__item {
+    aspect-ratio: var(--aspect-gallery);
+    overflow: hidden;
+  }
+
+  .featured-work__link {
+    margin-block-start: var(--space-6);
+  }
+
+  .featured-work__link a {
+    font-weight: var(--font-weight-bold);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (min-width: 48rem) {
+    .featured-work {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

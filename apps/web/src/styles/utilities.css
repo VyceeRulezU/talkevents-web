@@ -1,0 +1,39 @@
+@layer utilities {
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .visually-hidden.skip-link:focus {
+    position: fixed;
+    inset-block-start: var(--space-3);
+    inset-inline-start: var(--space-3);
+    width: auto;
+    height: auto;
+    padding: var(--space-3) var(--space-5);
+    margin: 0;
+    clip: auto;
+    overflow: visible;
+    white-space: normal;
+    background: var(--color-surface-page);
+    color: var(--color-text-strong);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    z-index: var(--z-modal);
+  }
+
+  .surface-tint {
+    background: var(--color-surface-tint);
+  }
+
+  .surface-subtle {
+    background: var(--color-surface-subtle);
+  }
+}
