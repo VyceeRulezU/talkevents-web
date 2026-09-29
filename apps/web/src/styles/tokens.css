@@ -46,6 +46,12 @@
   --color-brand-accent-hover:   var(--palette-green-400);
   --color-brand-accent-text:    var(--palette-green-600);   /* accent as text on light */
 
+  /* Muted CTA fill — deliberately darker/less saturated than the mark accent
+     above (design note: the bright accent reads better as a small highlight
+     than a large button fill). White text stays ≥ 4.5:1 on every stop. */
+  --color-cta-subtle:        var(--palette-green-700);      /* 6.58:1 with white */
+  --color-cta-subtle-hover:  var(--palette-green-600);      /* 5.39:1 with white */
+
   --color-text-strong:   var(--palette-ink-900);
   --color-text-default:  var(--palette-ink-800);
   --color-text-muted:    var(--palette-ink-500);
@@ -77,18 +83,27 @@
   --color-feedback-info:    var(--palette-blue-700);
 
   /* Image overlays (sample: dark scrim over hero + service tiles) */
-  --overlay-hero:  linear-gradient(180deg, rgb(11 11 11 / 0.55) 0%, rgb(11 11 11 / 0.25) 40%, rgb(11 11 11 / 0.65) 100%);
+  /* Left-to-right — hero copy sits on the left third of the photo. */
+  --overlay-hero:  linear-gradient(90deg, rgb(11 11 11 / 0.78) 0%, rgb(11 11 11 / 0.5) 32%, rgb(11 11 11 / 0.12) 62%, rgb(11 11 11 / 0) 82%);
+  /* Below md: the text column spans nearly the full width, so a flat, more
+     opaque tint keeps it legible regardless of where the cover-crop lands
+     (a side gradient tuned for a wide crop can leave narrow crops too light). */
+  --overlay-hero-mobile: rgb(11 11 11 / 0.6);
   --overlay-tile:  linear-gradient(180deg, rgb(11 11 11 / 0.05) 35%, rgb(11 11 11 / 0.72) 100%);
   --overlay-band:  rgb(20 44 90 / 0.72);                    /* brand-tinted CTA band */
   --overlay-testimonial: rgb(14 32 68 / 0.70);
+  --overlay-gloss: linear-gradient(180deg, rgb(255 255 255 / 0.32) 0%, rgb(255 255 255 / 0) 45%, rgb(0 0 0 / 0.14) 100%);
 
   /* ---------- 3. TYPOGRAPHY ---------------------------------------------- */
   /* Fonts mirror the design sample: serif display, grotesque sans body,
-     signature-script accent. Self-host via fontsource (see design-system.md). */
-  --font-display: "Tinos", "Times New Roman", Times, serif;
-  --font-body:    "Arimo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+     signature-script accent. Self-host via fontsource (see design-system.md).
+     Display swapped from Tinos to Cormorant Garamond — Tinos has no light
+     face, and headings now run at --font-weight-light. */
+  --font-display: "Cormorant Garamond", "Times New Roman", Times, serif;
+  --font-body:    "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-script:  "Mrs Saint Delafield", "Segoe Script", cursive;   /* decorative only, never body */
 
+  --font-weight-light:   300;
   --font-weight-regular: 400;
   --font-weight-medium:  500;
   --font-weight-bold:    700;
@@ -138,11 +153,11 @@
   --container-max:    75rem;    /* 1200 — sample content ≈ 1040–1200 */
   --container-narrow: 46rem;
   --container-wide:   90rem;
+  --container-header: 100rem;   /* 1600 — navbar runs wider than the page container */
   --gutter: clamp(var(--space-4), 0.5rem + 3vw, var(--space-7));
   --grid-gap: var(--space-4);   /* sample tile grid uses a tight gap */
 
-  --header-height: 4.5rem;
-  --header-height-scrolled: 3.75rem;
+  --header-height: 6rem;
 
   /* Breakpoints (CSS can't read vars in @media — keep literals in sync.
      Mobile-first: min-width only.) */
@@ -185,7 +200,7 @@
   --z-toast: 500;
 
   /* ---------- 9. COMPONENT-LEVEL ALIASES --------------------------------- */
-  --tap-target-min: 2.75rem;         /* 44px — WCAG 2.5.5 / mobile */
+  --tap-target-min: 3rem;         /* 48px — WCAG 2.5.5 / mobile */
   --button-height: 3rem;
   --button-padding-inline: var(--space-6);
   --field-height: 3rem;

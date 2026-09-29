@@ -1,9 +1,10 @@
 ---
-import '@fontsource/tinos/400.css';
-import '@fontsource/tinos/700.css';
-import '@fontsource/arimo/400.css';
-import '@fontsource/arimo/500.css';
-import '@fontsource/arimo/700.css';
+import '@fontsource/cormorant-garamond/300.css';
+import '@fontsource/cormorant-garamond/300-italic.css';
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/700.css';
 import '@fontsource/mrs-saint-delafield/400.css';
 
 import '@/styles/tokens.css';
@@ -25,11 +26,9 @@ interface Props {
   path: string;
   image?: string;
   noindex?: boolean;
-  /** True for pages with a full-bleed hero directly under the header. */
-  transparentHeader?: boolean;
 }
 
-const { title, description, path, image, noindex, transparentHeader = false } = Astro.props;
+const { title, description, path, image, noindex } = Astro.props;
 ---
 
 <!doctype html>
@@ -37,13 +36,14 @@ const { title, description, path, image, noindex, transparentHeader = false } = 
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="google-site-verification" content="2CQ7u8Gr1m5XMuNH1wx8WRWJO7sTZqpc8R7o0M8tmfs" />
     <Seo title={title} description={description} path={path} image={image} noindex={noindex} />
     <JsonLd schema={organizationSchema()} />
     <JsonLd schema={websiteSchema()} />
   </head>
   <body>
     <SkipLink />
-    <Header transparent={transparentHeader} />
+    <Header />
     <main id="main">
       <slot />
     </main>

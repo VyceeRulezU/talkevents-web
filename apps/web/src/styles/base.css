@@ -79,7 +79,7 @@
     font-family: var(--font-display);
     color: var(--color-text-strong);
     line-height: var(--leading-tight);
-    font-weight: var(--font-weight-regular);
+    font-weight: var(--font-weight-light);
   }
 
   h1 {

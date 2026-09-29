@@ -1,0 +1,15 @@
+{
+  "name": "talkevents-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm --prefix apps/web run dev",
+    "build": "npm --prefix apps/web run build",
+    "preview": "npm --prefix apps/web run preview",
+    "astro": "npm --prefix apps/web run astro"
+  },
+  "workspaces": [
+    "apps/*"
+  ]
+}

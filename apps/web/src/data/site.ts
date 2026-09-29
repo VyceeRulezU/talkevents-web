@@ -42,15 +42,21 @@ export const primaryNav: NavLink[] = [
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
   { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Journal', href: '/journal' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Contact Us', href: '/contact' },
 ];
 
+// Kept off the primary nav but still linked from the footer so journal
+// pages stay crawlable and internally linked (seo.md).
 export const footerNav: NavLink[] = [
-  ...primaryNav,
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Journal', href: '/journal' },
+  { label: 'Contact Us', href: '/contact' },
   { label: 'How we work', href: '/how-we-work' },
   { label: 'FAQ', href: '/faq' },
-  { label: 'Plan my event', href: '/book' },
+  { label: 'Book now', href: '/book' },
 ];
 
 export const legalNav: NavLink[] = [
@@ -59,7 +65,7 @@ export const legalNav: NavLink[] = [
   { label: 'Cookies', href: '/cookies' },
 ];
 
-export const primaryCta: NavLink = { label: 'Plan my event', href: '/book' };
+export const primaryCta: NavLink = { label: 'Book now', href: '/book' };
 export const whatsappCtaLabel = 'Chat on WhatsApp';
 
 export function whatsappHref(prefill?: string): string {

@@ -44,6 +44,12 @@ const isHidden = hiddenOn.includes(currentPath);
     background: var(--palette-green-700);
   }
 
+  /* Hide while the mobile menu is open — it was overlapping the menu's own
+     Book now button at the same bottom-right corner. */
+  :global(body:has(.header__mobile-nav[open])) .whatsapp-fab {
+    display: none;
+  }
+
   .whatsapp-fab svg {
     width: 1.75rem;
     height: 1.75rem;
