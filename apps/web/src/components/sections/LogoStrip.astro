@@ -1,16 +1,64 @@
 ---
-// Only show partner/client logos with written permission
-// (docs/open-questions.md #7). Left empty until confirmed.
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+// Logos supplied by the client. Only add a partner here with their written
+// permission (docs/open-questions.md #7).
+// `scale` evens out the optical size: the round marks carry a lot of empty
+// canvas, so at the same height they read far smaller than the wordmarks.
+const partners = [
+  { name: 'Aliza Events', src: '/images/partners/aliza-events.png', width: 500, height: 500, scale: 1.9 },
+  { name: 'Blue Velvet', src: '/images/partners/blue-velvet.svg', width: 244, height: 252, scale: 1.5 },
+  { name: 'NaliGrid', src: '/images/partners/nali-grid.svg', width: 3946, height: 1454, scale: 1 },
+  { name: 'Qmara Vie Planners', src: '/images/partners/qmara-vie-planners.png', width: 808, height: 360, scale: 1.1 },
+];
 ---
 
-<p class="logo-strip__note">
-  {'{{PLACEHOLDER: partner and client logos, shown only with written permission}}'}
-</p>
+<div class="logo-strip">
+  <SectionHeading heading="Our Partners" align="center" />
+
+  <ul role="list" class="logo-strip__list">
+    {partners.map((partner) => (
+      <li class="logo-strip__item" style={`--logo-scale: ${partner.scale}`}>
+        <img src={partner.src} alt={partner.name} width={partner.width} height={partner.height} loading="lazy" decoding="async" />
+      </li>
+    ))}
+  </ul>
+</div>
 
 <style>
-  .logo-strip__note {
-    text-align: center;
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
+  .logo-strip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-7);
+  }
+
+  .logo-strip__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-6) var(--space-8);
+    inline-size: 100%;
+  }
+
+  .logo-strip__item {
+    display: flex;
+  }
+
+  /* The files arrive in mixed colours (one is white-on-transparent), so every
+     logo is flattened to a single ink and shown as one quiet, even row. */
+  .logo-strip__item img {
+    inline-size: auto;
+    block-size: calc(var(--logo-partner-height) * var(--logo-scale, 1));
+    max-inline-size: 100%;
+    object-fit: contain;
+    filter: brightness(0);
+    opacity: 0.8;
+    transition: opacity var(--duration-base) var(--ease-standard);
+  }
+
+  .logo-strip__item:hover img {
+    opacity: 1;
   }
 </style>

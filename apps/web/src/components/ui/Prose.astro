@@ -1,0 +1,75 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['prose', className]}>
+  <slot />
+</div>
+
+<style>
+  /* Long-form copy (legal pages, articles). Slotted content is authored on the
+     page, so the rules reach it with :global. */
+  .prose {
+    max-inline-size: var(--measure-prose);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-default);
+  }
+
+  .prose :global(:where(h2)) {
+    margin-block: var(--space-7) var(--space-3);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-light);
+    line-height: var(--leading-snug);
+  }
+
+  .prose :global(:where(h3)) {
+    margin-block: var(--space-5) var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .prose :global(:where(p, ul, ol)) {
+    margin-block: 0 var(--space-4);
+  }
+
+  .prose :global(:where(ul, ol)) {
+    padding-inline-start: var(--space-5);
+  }
+
+  .prose :global(:where(ul)) {
+    list-style: disc;
+  }
+
+  .prose :global(:where(ol)) {
+    list-style: decimal;
+  }
+
+  .prose :global(:where(li)) {
+    margin-block-end: var(--space-2);
+  }
+
+  .prose :global(:where(a)) {
+    color: var(--color-text-link);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .prose :global(:where(a:hover)) {
+    color: var(--color-text-link-hover);
+  }
+
+  .prose :global(:where(.prose__meta)) {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .prose :global(:where(:first-child)) {
+    margin-block-start: 0;
+  }
+</style>

@@ -10,14 +10,17 @@ export const site = {
   description:
     'Talk Events plans and coordinates weddings, corporate events and celebrations in Abuja, so your day runs exactly as planned.',
   locale: 'en-NG',
+  // Brand blue (--color-brand-primary) for browser chrome; meta tags can't read CSS tokens.
+  themeColor: '#1A3870',
   currency: 'NGN',
 
   contact: {
-    phone: '{{PLACEHOLDER: phone number}}',
+    phone: '+234 817 747 7761',
+    phoneHref: 'tel:+2348177477761',
     whatsapp: '{{PLACEHOLDER: WhatsApp number, e.g. 2348000000000}}',
-    email: '{{PLACEHOLDER: email address}}',
+    email: 'contact@talkevents.ng',
     address: {
-      streetAddress: '{{PLACEHOLDER: street address}}',
+      streetAddress: 'No. 14 Nike Lake Street, Maitama',
       addressLocality: 'Abuja',
       addressRegion: 'FCT',
       addressCountry: 'NG',
@@ -59,11 +62,22 @@ export const footerNav: NavLink[] = [
   { label: 'Book now', href: '/book' },
 ];
 
+// Candidate services per PRD §10 FR-S3 — [CONFIRM] with client before launch.
+export const serviceNav: NavLink[] = [
+  { label: 'Wedding planning', href: '/services#weddings' },
+  { label: 'Corporate events', href: '/services#corporate-events' },
+  { label: 'Birthdays & milestones', href: '/services#celebrations' },
+];
+
 export const legalNav: NavLink[] = [
   { label: 'Privacy', href: '/privacy' },
   { label: 'Terms', href: '/terms' },
   { label: 'Cookies', href: '/cookies' },
 ];
+
+export const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${site.contact.address.streetAddress}, ${site.contact.address.addressLocality}, Nigeria`,
+)}`;
 
 export const primaryCta: NavLink = { label: 'Book now', href: '/book' };
 export const whatsappCtaLabel = 'Chat on WhatsApp';

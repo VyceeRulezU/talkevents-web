@@ -1,0 +1,72 @@
+---
+---
+
+<button type="button" class="back-to-top" aria-label="Back to top" hidden data-back-to-top>
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+    <path d="M12 19V5m0 0-6 6m6-6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</button>
+
+<script>
+  // Appears once the visitor is a screen or so down the page.
+  const button = document.querySelector<HTMLButtonElement>('[data-back-to-top]');
+
+  if (button) {
+    const sync = () => {
+      button.hidden = window.scrollY < window.innerHeight * 0.75;
+    };
+
+    button.addEventListener('click', () => {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+      // Keyboard users continue from the top of the page, not from a hidden button.
+      document.querySelector<HTMLElement>('.header__logo')?.focus({ preventScroll: true });
+    });
+
+    window.addEventListener('scroll', sync, { passive: true });
+    sync();
+  }
+</script>
+
+<style>
+  /* Sits directly above the WhatsApp button in the same corner. */
+  .back-to-top {
+    position: fixed;
+    inset-block-end: calc(max(var(--space-5), env(safe-area-inset-bottom)) + 3.5rem + var(--space-3));
+    inset-inline-end: calc(max(var(--space-5), env(safe-area-inset-right)) + 0.25rem);
+    z-index: var(--z-floating);
+    display: grid;
+    place-items: center;
+    inline-size: var(--tap-target-min);
+    block-size: var(--tap-target-min);
+    padding: 0;
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-circle);
+    background: var(--color-surface-card);
+    color: var(--color-brand-primary);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard);
+  }
+
+  .back-to-top[hidden] {
+    display: none;
+  }
+
+  .back-to-top:hover {
+    background: var(--color-brand-primary);
+    color: var(--color-text-on-dark);
+  }
+
+  .back-to-top svg {
+    inline-size: var(--icon-size-sm);
+    block-size: var(--icon-size-sm);
+  }
+
+  /* Same rule as the WhatsApp button: step aside for the open mobile menu. */
+  :global(body:has(.header__mobile-nav[open])) .back-to-top {
+    display: none;
+  }
+</style>

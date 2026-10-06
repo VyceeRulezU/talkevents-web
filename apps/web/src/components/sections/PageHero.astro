@@ -1,0 +1,92 @@
+---
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import Botanical from '@/components/ui/Botanical.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+}
+
+const { eyebrow, title } = Astro.props;
+
+// Faint contour lines drifting across the band: each is one smooth S-curve,
+// stepped down the canvas with a slowly changing swell.
+const waves = Array.from({ length: 14 }, (_, i) => {
+  const y = 30 + i * 28;
+  const swell = 36 + i * 5;
+  return `M0 ${y}C240 ${y - swell} 480 ${y + swell} 720 ${y}S1200 ${y - swell} 1440 ${y + swell / 2}`;
+});
+---
+
+<section class="page-hero surface-dark" aria-labelledby="page-hero-title">
+  <svg class="page-hero__waves" viewBox="0 0 1440 420" preserveAspectRatio="none" fill="none" stroke="currentColor" aria-hidden="true" focusable="false">
+    {waves.map((d) => <path d={d} />)}
+  </svg>
+
+  <span class="page-hero__flower"><Botanical /></span>
+
+  <div class="container container--header page-hero__inner">
+    {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+    <h1 id="page-hero-title" class="page-hero__title">{title}</h1>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    min-block-size: 50vh;
+    min-block-size: 50dvh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--color-surface-brand);
+  }
+
+  /* Strongest at the left edge, gone before the flower on the right. */
+  .page-hero__waves {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    color: var(--color-text-on-dark);
+    opacity: 0.16;
+    stroke-width: var(--border-width);
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 78%);
+    mask-image: linear-gradient(90deg, #000 0%, transparent 78%);
+    pointer-events: none;
+  }
+
+  .page-hero__waves path {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .page-hero__flower {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-end: 0;
+    inline-size: clamp(var(--space-10), 22vw, calc(var(--space-10) * 3));
+    block-size: 92%;
+    color: var(--color-brand-accent);
+    opacity: 0.55;
+    transform: scaleX(-1);
+  }
+
+  .page-hero__inner {
+    position: relative;
+    z-index: var(--z-raised);
+    padding-block: var(--space-7);
+  }
+
+  .page-hero__inner :global(.eyebrow) {
+    margin-block-end: var(--space-4);
+  }
+
+  .page-hero__title {
+    max-inline-size: calc(var(--measure-narrow) * 0.4);
+    margin: 0;
+    font-size: var(--text-4xl);
+    font-weight: var(--font-weight-light);
+    line-height: var(--leading-tight);
+    text-wrap: balance;
+  }
+</style>

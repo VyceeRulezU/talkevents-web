@@ -1,55 +1,127 @@
 ---
 import Button from '@/components/ui/Button.astro';
-import Eyebrow from '@/components/ui/Eyebrow.astro';
-import PlaceholderMedia from '@/components/ui/PlaceholderMedia.astro';
 import { primaryCta } from '@/data/site';
+
+interface Props {
+  heading?: string;
+  body?: string;
+  cta?: { label: string; href: string };
+  /** Basename in /public/images — a .jpg and .webp of each must exist. */
+  image?: { name: string; alt: string; width: number; height: number; position?: string };
+  level?: 'h2' | 'h3';
+}
+
+// Default photo: temporary stock (Pexels, free-to-use license). Hands only —
+// CTA imagery must never show an identifiable face (design-system.md §5).
+const {
+  heading = 'Let’s start planning your event',
+  body = 'Tell us what you have in mind and we’ll shape a plan that runs exactly as it should on the day.',
+  cta = primaryCta,
+  image = {
+    name: 'cta-wedding-hands',
+    alt: 'A bride and groom holding hands during a Nigerian wedding ceremony',
+    width: 1920,
+    height: 1280,
+    position: 'center',
+  },
+  level: Heading = 'h2',
+} = Astro.props;
 ---
 
-<div class="cta-band">
-  <div class="cta-band__media">
-    <PlaceholderMedia label="Placeholder" tone="ink" />
-  </div>
-  <div class="cta-band__content">
-    <Eyebrow>Ready when you are</Eyebrow>
-    <h2 class="cta-band__heading">Let&rsquo;s plan your event</h2>
-    <Button href={primaryCta.href} variant="outline">{primaryCta.label}</Button>
+<div class="cta-band surface-dark">
+  <picture class="cta-band__media">
+    <source srcset={`/images/${image.name}.webp`} type="image/webp" />
+    <img
+      src={`/images/${image.name}.jpg`}
+      alt={image.alt}
+      width={image.width}
+      height={image.height}
+      style={`object-position: ${image.position ?? 'center'}`}
+      loading="lazy"
+      decoding="async"
+    />
+  </picture>
+
+  <div class="container container--header cta-band__inner">
+    <div class="cta-band__content">
+      <Heading class="cta-band__heading">{heading}</Heading>
+      <p class="cta-band__body">{body}</p>
+      <Button href={cta.href} variant="accent-subtle">{cta.label}</Button>
+    </div>
   </div>
 </div>
 
 <style>
   .cta-band {
     position: relative;
-    display: grid;
-    place-items: center;
-    min-height: 20rem;
+    min-block-size: calc(100vh - var(--header-height));
+    min-block-size: calc(100dvh - var(--header-height));
+    display: flex;
+    align-items: center;
     overflow: hidden;
+    background: var(--color-surface-dark);
   }
 
   .cta-band__media {
     position: absolute;
     inset: 0;
+    display: block;
   }
 
+  .cta-band__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* A dark scrim over the full-bleed photo keeps the light copy legible. */
   .cta-band__media::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--overlay-band);
+    background: var(--overlay-cta-mobile);
+  }
+
+  .cta-band__inner {
+    position: relative;
+    z-index: var(--z-raised);
+    inline-size: 100%;
+    padding-block: var(--space-7);
   }
 
   .cta-band__content {
-    position: relative;
-    z-index: var(--z-raised);
-    text-align: center;
-    color: var(--color-text-on-dark);
-    padding-inline: var(--gutter);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    max-inline-size: calc(var(--container-narrow) * 0.6);
   }
 
   .cta-band__heading {
-    margin-block-end: var(--space-5);
+    margin: 0;
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-light);
+    line-height: var(--leading-tight);
+    color: var(--color-text-strong);
+    text-wrap: balance;
   }
 
-  .cta-band__content :global(.button--outline) {
-    color: var(--color-text-on-dark);
+  .cta-band__body {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .cta-band__content :global(.button) {
+    margin-block-start: var(--space-2);
+  }
+
+  @media (min-width: 48rem) {
+    .cta-band__media::after {
+      background: var(--overlay-cta);
+    }
   }
 </style>

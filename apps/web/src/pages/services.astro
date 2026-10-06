@@ -1,0 +1,220 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Button from '@/components/ui/Button.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import ProcessSteps from '@/components/sections/ProcessSteps.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+
+// Candidate services per PRD §10 FR-S3. The "what we take care of" lists are
+// a draft scope — [CONFIRM] each line with the client before launch.
+// Photos: temporary decor-only stock (Pexels, free-to-use license).
+const services = [
+  {
+    id: 'weddings',
+    eyebrow: 'Weddings',
+    heading: 'Wedding planning and coordination',
+    body: [
+      'Introduction, traditional wedding and white wedding, planned as one joined-up celebration or as separate days. We carry the plan from the first venue visit to the last dance, and keep both families working from the same page.',
+      'Whether you want us beside you from the start or need a steady hand for the final weeks and the day itself, we shape the support around what you still have left to do.',
+    ],
+    includes: [
+      'Venue search, visits and bookings',
+      'Vendor sourcing, briefing and management',
+      'Budget planning and tracking',
+      'Guest logistics and aso ebi coordination',
+      'Timeline, programme and rehearsal',
+      'Full coordination on the day',
+    ],
+    type: 'wedding',
+    image: { name: 'service-wedding-decor', alt: 'Long banquet tables leading to a floral backdrop under green draping, set for a traditional wedding', width: 1200, height: 800 },
+  },
+  {
+    id: 'corporate-events',
+    eyebrow: 'Corporate events',
+    heading: 'Conferences, launches and company events',
+    body: [
+      'Conferences, product launches, award nights, retreats and staff events, delivered to your brief, your brand and your schedule. We handle the logistics so your team can focus on the content and the guests.',
+      'You get a clear plan up front, a single contact throughout, and an on-site team that keeps the programme running to time.',
+    ],
+    includes: [
+      'Venue sourcing and room layout',
+      'Registration and guest management',
+      'Stage, sound, screens and lighting coordination',
+      'Catering and hospitality',
+      'Speaker and programme management',
+      'On-site event team',
+    ],
+    type: 'corporate',
+    image: { name: 'service-corporate-hall', alt: 'Rows of chairs set out either side of a central aisle in a conference hall', width: 1200, height: 800 },
+  },
+  {
+    id: 'celebrations',
+    eyebrow: 'Birthdays and milestones',
+    heading: 'Birthdays and milestone celebrations',
+    body: [
+      'Milestone birthdays, naming ceremonies, anniversaries, send-forths and family celebrations. Tell us who you are celebrating and how you want the room to feel, and we will build the day around it.',
+      'From an intimate dinner to a full hall, the planning is the same: a clear programme, vendors who know their brief, and a team that sets up, runs the day and clears down.',
+    ],
+    includes: [
+      'Theme and styling direction',
+      'Venue and vendor booking',
+      'Invitations and guest list support',
+      'Cake, catering and entertainment coordination',
+      'Programme and MC briefing',
+      'Set-up, coordination and clear-down',
+    ],
+    type: 'birthday',
+    image: { name: 'service-celebration-table', alt: 'A long celebration table dressed with white flowers, gold-rimmed plates and balloons', width: 1200, height: 1500 },
+  },
+];
+---
+
+<BaseLayout
+  title="Event Planning Services in Abuja | Talk Events"
+  description="Wedding planning, corporate events, birthdays and milestone celebrations in Abuja, planned and coordinated end to end by Talk Events."
+  path="/services"
+>
+  <PageHero eyebrow="What we do" title="Planning and coordination, end to end" />
+
+  {services.map((service, index) => (
+    <Section id={service.id} tint={index % 2 === 1} ariaLabel={service.eyebrow} class="service-section">
+      <Container width="header">
+        <div class:list={['service', index % 2 === 1 && 'service--flip']}>
+          <picture class="service__media">
+            <source srcset={`/images/${service.image.name}.webp`} type="image/webp" />
+            <img
+              src={`/images/${service.image.name}.jpg`}
+              alt={service.image.alt}
+              width={service.image.width}
+              height={service.image.height}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          </picture>
+          <div class="service__copy">
+            <SectionHeading eyebrow={service.eyebrow} heading={service.heading} />
+            {service.body.map((paragraph) => <p>{paragraph}</p>)}
+            <h3 class="service__list-title">What we take care of</h3>
+            <ul role="list" class="service__list">
+              {service.includes.map((item) => (
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                    <path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <Button href={`/book?type=${service.type}`} variant="accent-subtle" arrow>Plan my event</Button>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  ))}
+
+  <Section dark ariaLabel="How we work" class="surface-brand">
+    <Container width="header">
+      <ProcessSteps />
+    </Container>
+  </Section>
+
+  <Section ariaLabel="Plan your event" class="section--flush">
+    <CtaBand />
+  </Section>
+</BaseLayout>
+
+<style>
+  :global(.section--flush) {
+    padding-block: 0;
+  }
+
+  /* "Learn more" links from the home page land on these sections. */
+  :global(.service-section) {
+    scroll-margin-block-start: var(--header-height);
+  }
+
+  .service {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .service__media {
+    position: relative;
+    display: block;
+    aspect-ratio: var(--aspect-gallery);
+    overflow: hidden;
+  }
+
+  .service__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .service__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    max-inline-size: var(--measure-prose);
+  }
+
+  .service__copy p {
+    margin: 0;
+    line-height: var(--leading-relaxed);
+  }
+
+  .service__list-title {
+    margin: var(--space-3) 0 0;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .service__list {
+    display: grid;
+    gap: var(--space-3) var(--space-6);
+    grid-template-columns: 1fr;
+    inline-size: 100%;
+    margin-block-end: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .service__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .service__list svg {
+    flex-shrink: 0;
+    inline-size: var(--icon-size-sm);
+    block-size: var(--icon-size-sm);
+    color: var(--color-brand-accent-text);
+  }
+
+  @media (min-width: 40rem) {
+    .service__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .service {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: var(--space-9);
+    }
+
+    .service--flip .service__media {
+      order: 2;
+    }
+  }
+</style>

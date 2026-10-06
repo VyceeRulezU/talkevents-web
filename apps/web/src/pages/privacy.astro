@@ -1,0 +1,122 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Section from '@/components/ui/Section.astro';
+import Prose from '@/components/ui/Prose.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import { site } from '@/data/site';
+
+// DRAFT — written to match how this site actually works today. It needs the
+// client's legal review before launch (docs/open-questions.md #22), and must
+// be updated when the enquiry backend or any analytics tool is switched on.
+const { address } = site.contact;
+---
+
+<BaseLayout
+  title="Privacy Policy | Talk Events"
+  description="How Talk Events collects, uses and protects your personal information when you visit this website or send us an enquiry."
+  path="/privacy"
+>
+  <PageHero eyebrow="Legal" title="Privacy policy" />
+
+  <Section ariaLabel="Privacy policy">
+    <Container width="header">
+      <Prose>
+        <p class="prose__meta">Last updated: 6 October 2026</p>
+
+        <p>
+          {site.name} (“we”, “us”) plans and coordinates events in Abuja, Nigeria. This policy explains
+          what personal information we collect through this website, why we collect it, and the
+          choices you have. We handle personal information in line with the Nigeria Data Protection
+          Act 2023.
+        </p>
+
+        <h2>Information we collect</h2>
+        <h3>Information you give us</h3>
+        <p>When you send an enquiry or booking request, or contact us by phone, email or WhatsApp, we collect what you choose to tell us. This usually includes:</p>
+        <ul>
+          <li>your name, phone or WhatsApp number and, if you provide it, your email address;</li>
+          <li>details of your event, such as the type of event, the date, guest numbers, venue or area and budget;</li>
+          <li>anything else you write in your message.</li>
+        </ul>
+        <h3>Information collected automatically</h3>
+        <p>
+          Like most websites, the servers that deliver this site record basic technical information
+          such as your IP address, browser type and the pages requested. We use this to keep the site
+          secure and working properly. We do not use it to identify you.
+        </p>
+
+        <h2>How we use your information</h2>
+        <ul>
+          <li>to reply to your enquiry and prepare a proposal for your event;</li>
+          <li>to plan and deliver an event you have booked with us, including sharing the necessary details with venues and vendors working on it;</li>
+          <li>to send you planning tips and news, only if you have ticked the box asking for them;</li>
+          <li>to keep our website secure and to meet our legal obligations.</li>
+        </ul>
+
+        <h2>Our lawful basis</h2>
+        <p>
+          We rely on your consent when you send us an enquiry or opt in to updates, on the steps
+          needed to enter into and perform a contract when you book with us, and on our legitimate
+          interest in running and securing our business.
+        </p>
+
+        <h2>Who we share it with</h2>
+        <p>We do not sell your personal information. We share it only where needed:</p>
+        <ul>
+          <li>with venues and vendors involved in an event you have asked us to plan, limited to what they need to do their work;</li>
+          <li>with service providers that host this website and deliver our email, who process it on our instructions;</li>
+          <li>where the law requires us to.</li>
+        </ul>
+        <p>
+          Some of these providers may store information outside Nigeria. Where that happens, we take
+          steps to make sure it remains protected.
+        </p>
+
+        <h2>How long we keep it</h2>
+        <p>
+          We keep enquiry details for as long as we need them to respond and to follow up on your
+          event. If you book with us, we keep records for as long as required for accounting and
+          legal purposes. You can ask us to delete your information sooner.
+        </p>
+
+        <h2>Photographs from events</h2>
+        <p>
+          We only publish photographs in which people can be identified, and testimonials, with the
+          consent of the people concerned. If you appear in a photograph on this site and would like
+          it removed, tell us and we will take it down.
+        </p>
+
+        <h2>Your rights</h2>
+        <p>You have the right to:</p>
+        <ul>
+          <li>ask for a copy of the personal information we hold about you;</li>
+          <li>ask us to correct or delete it;</li>
+          <li>object to, or ask us to restrict, how we use it;</li>
+          <li>withdraw your consent at any time, including for marketing messages;</li>
+          <li>complain to the Nigeria Data Protection Commission if you believe we have mishandled your information.</li>
+        </ul>
+
+        <h2>Cookies</h2>
+        <p>
+          Our <a href="/cookies">cookie policy</a> explains what is stored on your device when you
+          use this site.
+        </p>
+
+        <h2>Changes to this policy</h2>
+        <p>
+          We may update this policy from time to time. The date at the top of the page shows when it
+          was last changed.
+        </p>
+
+        <h2>Contact us</h2>
+        <p>
+          For any question about this policy or your information, email
+          <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>, call
+          <a href={site.contact.phoneHref}>{site.contact.phone}</a>, or write to us at
+          {address.streetAddress}, {address.addressLocality}, Nigeria.
+        </p>
+      </Prose>
+    </Container>
+  </Section>
+</BaseLayout>

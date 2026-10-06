@@ -1,0 +1,62 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import Gallery from '@/components/sections/Gallery.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+
+// The photos in <Gallery> are temporary decor-only stock, NOT Talk Events'
+// own work. Swap in the client's event photography (and, with consent, case
+// studies) before this page is promoted — until then it stays `noindex`.
+---
+
+<BaseLayout
+  title="Event Portfolio | Talk Events Abuja"
+  description="Rooms, tables and settings from weddings, corporate events and celebrations planned and coordinated in Abuja."
+  path="/portfolio"
+  noindex
+>
+  <PageHero eyebrow="Our work" title="Rooms, tables and settings" />
+
+  <Section ariaLabel="Gallery">
+    <Container width="header">
+      <div class="portfolio-intro">
+        <SectionHeading eyebrow="Gallery" heading="A closer look" />
+        <p>
+          Every event starts as a plan on paper and ends as a room full of people. Here is a look at
+          the kind of settings we plan, dress and run. Select any photo to see it larger.
+        </p>
+      </div>
+      <Gallery layout="grid" />
+    </Container>
+  </Section>
+
+  <Section ariaLabel="Plan your event" class="section--flush">
+    <CtaBand
+      heading="Picture your own event here"
+      body="Tell us what you have in mind and we’ll come back with a plan, a timeline and the right people to deliver it."
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  :global(.section--flush) {
+    padding-block: 0;
+  }
+
+  .portfolio-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-inline-size: var(--measure-prose);
+    margin-block-end: var(--space-7);
+  }
+
+  .portfolio-intro p {
+    margin: 0;
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-muted);
+  }
+</style>

@@ -4,30 +4,20 @@ import Eyebrow from '@/components/ui/Eyebrow.astro';
 interface Props {
   eyebrow?: string;
   heading: string;
-  /** One word inside `heading` to render in the script accent font. Must appear verbatim in `heading`. */
-  scriptWord?: string;
   level?: 'h1' | 'h2' | 'h3';
   id?: string;
   align?: 'start' | 'center';
   class?: string;
 }
 
-const { eyebrow, heading, scriptWord, level = 'h2', id, align = 'start', class: className } = Astro.props;
+const { eyebrow, heading, level = 'h2', id, align = 'start', class: className } = Astro.props;
 const Tag = level;
-
-const parts = scriptWord && heading.includes(scriptWord) ? heading.split(scriptWord) : null;
 ---
 
 <div class:list={['section-heading', align === 'center' && 'section-heading--center', className]}>
   {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
   <Tag id={id} class="section-heading__title">
-    {parts ? (
-      <>
-        {parts[0]}<span class="section-heading__script">{scriptWord}</span>{parts[1]}
-      </>
-    ) : (
-      heading
-    )}
+    {heading}
   </Tag>
 </div>
 
@@ -42,17 +32,14 @@ const parts = scriptWord && heading.includes(scriptWord) ? heading.split(scriptW
     margin-inline: auto;
   }
 
+  /* One heading language site-wide: light display serif, uppercase, generous
+     tracking. Left-aligned by default so it still reads as a section opener. */
   .section-heading__title {
     margin: 0;
-  }
-
-  .section-heading__script {
-    font-family: var(--font-script);
-    font-weight: var(--font-weight-regular);
-    font-size: var(--text-script);
-    line-height: 1;
-    display: inline-block;
-    vertical-align: middle;
-    color: var(--color-brand-accent-text);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-light);
+    line-height: var(--leading-snug);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
   }
 </style>

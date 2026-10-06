@@ -36,4 +36,9 @@
   .surface-subtle {
     background: var(--color-surface-subtle);
   }
+
+  /* Pair with .surface-dark so text, borders and focus swap to on-dark tokens. */
+  .surface-brand {
+    background: var(--color-surface-brand);
+  }
 }

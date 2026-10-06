@@ -1,0 +1,643 @@
+---
+import Button from '@/components/ui/Button.astro';
+import { site, whatsappHref } from '@/data/site';
+
+interface Props {
+  /** `short`: one screen, for /contact. `steps`: the three-step booking flow on /book. */
+  variant?: 'short' | 'steps';
+  id?: string;
+}
+
+const { variant = 'short', id = 'enquiry' } = Astro.props;
+const stepped = variant === 'steps';
+
+const eventTypes = [
+  { value: 'Wedding', label: 'Wedding', hint: 'Introduction, traditional or white wedding' },
+  { value: 'Corporate event', label: 'Corporate event', hint: 'Conference, launch or staff event' },
+  { value: 'Birthday or milestone', label: 'Birthday or milestone', hint: 'Birthdays, naming ceremonies, anniversaries' },
+  { value: 'Something else', label: 'Something else', hint: 'Tell us more in your message' },
+];
+
+const guestRanges = ['Up to 50', '50 to 150', '150 to 300', '300 to 500', 'More than 500', 'Not sure yet'];
+
+// WhatsApp is only offered once the client's number is confirmed in site.ts.
+const hasWhatsapp = !site.contact.whatsapp.startsWith('{{');
+---
+
+<form
+  class:list={['enquiry', stepped && 'enquiry--steps']}
+  id={id}
+  method="post"
+  action="/api/v1/enquiry"
+  novalidate
+  data-enquiry
+  data-email={site.contact.email}
+>
+  {stepped && (
+    <ol role="list" class="enquiry__progress" aria-label="Progress" data-enquiry-progress>
+      <li aria-current="step"><span>1</span> Your event</li>
+      <li><span>2</span> The details</li>
+      <li><span>3</span> About you</li>
+    </ol>
+  )}
+
+  <div class="enquiry__status" role="alert" tabindex="-1" hidden data-enquiry-error></div>
+
+  {stepped && (
+    <fieldset class="enquiry__step" data-enquiry-step>
+      <legend class="enquiry__legend">What are you planning?</legend>
+      <div class="enquiry__choices">
+        {eventTypes.map((type, index) => (
+          <label class="choice">
+            <input type="radio" name="eventType" value={type.value} required={index === 0} />
+            <span class="choice__body">
+              <span class="choice__label">{type.label}</span>
+              <span class="choice__hint">{type.hint}</span>
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  )}
+
+  {stepped && (
+    <fieldset class="enquiry__step" data-enquiry-step>
+      <legend class="enquiry__legend">Tell us the details</legend>
+      <div class="enquiry__grid">
+        <div class="field">
+          <label for={`${id}-date`}>Event date</label>
+          <input id={`${id}-date`} name="eventDate" type="date" aria-describedby={`${id}-date-hint`} />
+          <p class="field__hint" id={`${id}-date-hint`}>Leave blank if you have not fixed a date yet.</p>
+        </div>
+        <div class="field">
+          <label for={`${id}-guests`}>Number of guests</label>
+          <select id={`${id}-guests`} name="guests" required>
+            <option value="">Choose a range</option>
+            {guestRanges.map((range) => <option value={range}>{range}</option>)}
+          </select>
+        </div>
+        <div class="field field--wide">
+          <label for={`${id}-area`}>Venue or area</label>
+          <input id={`${id}-area`} name="area" type="text" autocomplete="off" aria-describedby={`${id}-area-hint`} />
+          <p class="field__hint" id={`${id}-area-hint`}>For example Maitama, Wuse 2 or Jabi, or the venue if you have one.</p>
+        </div>
+      </div>
+    </fieldset>
+  )}
+
+  <fieldset class="enquiry__step" data-enquiry-step>
+    <legend class:list={['enquiry__legend', !stepped && 'visually-hidden']}>{stepped ? 'How do we reach you?' : 'Your enquiry'}</legend>
+    <div class="enquiry__grid">
+      <div class="field">
+        <label for={`${id}-name`}>Your name</label>
+        <input id={`${id}-name`} name="name" type="text" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <label for={`${id}-phone`}>Phone or WhatsApp number</label>
+        <input id={`${id}-phone`} name="phone" type="tel" inputmode="tel" autocomplete="tel" required />
+      </div>
+      <div class="field">
+        <label for={`${id}-email`}>Email <span class="field__optional">(optional)</span></label>
+        <input id={`${id}-email`} name="email" type="email" inputmode="email" autocomplete="email" />
+      </div>
+      {stepped ? (
+        <div class="field">
+          <label for={`${id}-budget`}>Budget <span class="field__optional">(optional)</span></label>
+          <input id={`${id}-budget`} name="budget" type="text" inputmode="text" autocomplete="off" aria-describedby={`${id}-budget-hint`} />
+          <p class="field__hint" id={`${id}-budget-hint`}>A rough figure in ₦ helps us suggest the right plan.</p>
+        </div>
+      ) : (
+        <div class="field">
+          <label for={`${id}-type`}>Type of event</label>
+          <select id={`${id}-type`} name="eventType" required>
+            <option value="">Choose one</option>
+            {eventTypes.map((type) => <option value={type.value}>{type.label}</option>)}
+          </select>
+        </div>
+      )}
+      <div class="field field--wide">
+        <label for={`${id}-message`}>
+          {stepped ? 'Anything else we should know?' : 'How can we help?'}
+          {stepped && <span class="field__optional"> (optional)</span>}
+        </label>
+        <textarea id={`${id}-message`} name="message" rows="5" required={!stepped}></textarea>
+      </div>
+
+      {/* Honeypot: hidden from people, tempting to bots. */}
+      <div class="enquiry__trap" aria-hidden="true">
+        <label for={`${id}-company`}>Company</label>
+        <input id={`${id}-company`} name="company" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <label class="check field--wide">
+        <input type="checkbox" name="marketingConsent" value="yes" />
+        <span>Send me occasional planning tips and news from {site.name}.</span>
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="enquiry__actions">
+    {stepped && (
+      <button type="button" class="enquiry__back" hidden data-enquiry-back>Back</button>
+    )}
+    {stepped && (
+      <span hidden data-enquiry-next-wrap>
+        <Button type="button" variant="primary" class="enquiry__next">Continue</Button>
+      </span>
+    )}
+    <span data-enquiry-submit-wrap>
+      <Button type="submit" variant="accent-subtle">Send my enquiry</Button>
+    </span>
+  </div>
+
+  <p class="enquiry__privacy">
+    We use these details only to reply to your enquiry. See our <a href="/privacy">privacy policy</a>.
+    {hasWhatsapp && (
+      <>
+        {' '}Prefer WhatsApp? <a href={whatsappHref()} target="_blank" rel="noopener">Chat with us</a>.
+      </>
+    )}
+  </p>
+
+  <div class="enquiry__success" role="status" tabindex="-1" hidden data-enquiry-success></div>
+</form>
+
+<script>
+  // Progressive enhancement. Without JS the form is a plain POST with every
+  // fieldset visible. With JS: step-by-step on /book, inline validation, and a
+  // fetch submit. If the site can't deliver the enquiry, nothing typed is lost
+  // and the visitor is handed the same message ready to send by email.
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-enquiry]')) {
+    const steps = [...form.querySelectorAll<HTMLFieldSetElement>('[data-enquiry-step]')];
+    const progress = [...form.querySelectorAll<HTMLLIElement>('[data-enquiry-progress] li')];
+    const back = form.querySelector<HTMLButtonElement>('[data-enquiry-back]');
+    const nextWrap = form.querySelector<HTMLElement>('[data-enquiry-next-wrap]');
+    const submitWrap = form.querySelector<HTMLElement>('[data-enquiry-submit-wrap]');
+    const errorBox = form.querySelector<HTMLElement>('[data-enquiry-error]');
+    const successBox = form.querySelector<HTMLElement>('[data-enquiry-success]');
+    const stepped = form.classList.contains('enquiry--steps') && steps.length > 1;
+    let current = 0;
+
+    // /book?type=corporate arrives with the matching option already chosen.
+    const wanted = new URLSearchParams(window.location.search).get('type')?.toLowerCase();
+    if (wanted) {
+      for (const input of form.querySelectorAll<HTMLInputElement>('input[name="eventType"]')) {
+        if (input.value.toLowerCase().startsWith(wanted.slice(0, 5))) input.checked = true;
+      }
+    }
+
+    const labelFor = (field: Element) => {
+      const id = field.getAttribute('id');
+      const label = id ? form.querySelector(`label[for="${id}"]`) : field.closest('fieldset')?.querySelector('legend');
+      return (label?.textContent ?? 'This field').replace(/\(optional\)/, '').trim();
+    };
+
+    const problem = (field: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => {
+      if (field.validity.valueMissing) {
+        return field.type === 'radio' ? 'Choose the type of event.' : `${labelFor(field)}: this is needed.`;
+      }
+      if (field.validity.typeMismatch) return `${labelFor(field)}: check this is written correctly.`;
+      return `${labelFor(field)}: check this entry.`;
+    };
+
+    const validate = (scope: ParentNode) => {
+      const fields = [...scope.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea')];
+      // A radio group fails as one: report it once, on its first option.
+      const seen = new Set<string>();
+      const invalid = fields.filter((field) => {
+        if (field.checkValidity()) return false;
+        if (field.type !== 'radio') return true;
+        if (seen.has(field.name)) return false;
+        seen.add(field.name);
+        return true;
+      });
+      for (const field of fields) field.toggleAttribute('aria-invalid', invalid.includes(field));
+      if (!errorBox) return invalid.length === 0;
+
+      if (invalid.length === 0) {
+        errorBox.hidden = true;
+        errorBox.replaceChildren();
+        return true;
+      }
+
+      const heading = document.createElement('p');
+      heading.textContent = 'Please check the following:';
+      const list = document.createElement('ul');
+      for (const field of invalid) {
+        const item = document.createElement('li');
+        item.textContent = problem(field);
+        list.append(item);
+      }
+      errorBox.replaceChildren(heading, list);
+      errorBox.hidden = false;
+      invalid[0].focus();
+      return false;
+    };
+
+    const showStep = (index: number, focus = true) => {
+      current = index;
+      steps.forEach((step, i) => (step.hidden = i !== current));
+      progress.forEach((item, i) => {
+        if (i === current) item.setAttribute('aria-current', 'step');
+        else item.removeAttribute('aria-current');
+        item.toggleAttribute('data-done', i < current);
+      });
+      const last = current === steps.length - 1;
+      if (back) back.hidden = current === 0;
+      if (nextWrap) nextWrap.hidden = last;
+      if (submitWrap) submitWrap.hidden = !last;
+      if (focus) steps[current].querySelector<HTMLElement>('input, select, textarea')?.focus();
+    };
+
+    if (stepped) {
+      showStep(0, false);
+      nextWrap?.querySelector('button')?.addEventListener('click', () => {
+        if (validate(steps[current])) showStep(current + 1);
+      });
+      back?.addEventListener('click', () => {
+        if (errorBox) errorBox.hidden = true;
+        showStep(current - 1);
+      });
+    }
+
+    const summary = (data: FormData) => {
+      const line = (label: string, key: string) => {
+        const value = String(data.get(key) ?? '').trim();
+        return value ? `${label}: ${value}` : '';
+      };
+      return [
+        line('Name', 'name'),
+        line('Phone / WhatsApp', 'phone'),
+        line('Email', 'email'),
+        line('Event type', 'eventType'),
+        line('Event date', 'eventDate'),
+        line('Guests', 'guests'),
+        line('Venue or area', 'area'),
+        line('Budget', 'budget'),
+        line('Message', 'message'),
+      ]
+        .filter(Boolean)
+        .join('\n');
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (stepped) {
+        const firstBad = steps.findIndex((step) => step.querySelector(':invalid'));
+        if (firstBad !== -1 && firstBad !== current) showStep(firstBad, false);
+      }
+      if (!validate(stepped ? steps[current] : form)) return;
+
+      const data = new FormData(form);
+      if (data.get('company')) return; // honeypot filled: quietly drop it
+
+      const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (submit) submit.disabled = true;
+
+      let delivered = false;
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ ...Object.fromEntries(data), page: window.location.pathname }),
+        });
+        delivered = response.ok;
+      } catch {
+        delivered = false;
+      }
+      if (submit) submit.disabled = false;
+
+      const name = String(data.get('name') ?? '').trim();
+
+      if (delivered && successBox) {
+        successBox.textContent = `Thanks${name ? `, ${name}` : ''}. Your enquiry is with us and we will be in touch.`;
+        successBox.hidden = false;
+        form.reset();
+        if (stepped) showStep(0, false);
+        successBox.focus();
+        return;
+      }
+
+      // Not delivered: keep everything typed and offer the same message by email.
+      if (!errorBox) return;
+      const email = form.dataset.email ?? '';
+      const subject = `Event enquiry${name ? ` from ${name}` : ''}`;
+      const text = document.createElement('p');
+      text.textContent = 'We could not send your enquiry from this page just now. Your details are still here, and you can send the same message by email in one tap:';
+      const link = document.createElement('a');
+      link.className = 'enquiry__fallback';
+      link.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(summary(data))}`;
+      link.textContent = `Email this enquiry to ${email}`;
+      errorBox.replaceChildren(text, link);
+      errorBox.hidden = false;
+      errorBox.focus();
+    });
+  }
+</script>
+
+<style>
+  .enquiry {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border-subtle);
+    background: var(--color-surface-card);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .enquiry__progress {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+    padding-block-end: var(--space-5);
+    border-block-end: var(--border-width) solid var(--color-border-subtle);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .enquiry__progress li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .enquiry__progress span {
+    display: grid;
+    place-items: center;
+    inline-size: var(--space-6);
+    block-size: var(--space-6);
+    border: var(--border-width) solid var(--color-border-default);
+    border-radius: var(--radius-circle);
+  }
+
+  .enquiry__progress li[aria-current],
+  .enquiry__progress li[data-done] {
+    color: var(--color-text-strong);
+  }
+
+  .enquiry__progress li[aria-current] span,
+  .enquiry__progress li[data-done] span {
+    border-color: var(--color-brand-primary);
+    background: var(--color-brand-primary);
+    color: var(--color-text-on-dark);
+  }
+
+  .enquiry__step {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .enquiry__step[hidden] {
+    display: none;
+  }
+
+  .enquiry__legend {
+    margin-block-end: var(--space-5);
+    padding: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-light);
+    color: var(--color-text-strong);
+  }
+
+  .enquiry__grid,
+  .enquiry__choices {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 1fr;
+  }
+
+  .enquiry__choices {
+    gap: var(--space-3);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-inline-size: 0;
+  }
+
+  .field label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-strong);
+  }
+
+  .field__optional {
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-muted);
+  }
+
+  .field__hint {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .field :where(input, select, textarea) {
+    inline-size: 100%;
+    min-block-size: var(--field-height);
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-page);
+    color: var(--color-text-default);
+    font: inherit;
+    font-size: var(--text-base);
+  }
+
+  /* Single-line controls share one exact height, so a select lines up with
+     the input beside it. */
+  .field :where(input, select) {
+    block-size: var(--field-height);
+    padding-block: 0;
+  }
+
+  .field textarea {
+    resize: vertical;
+  }
+
+  .field :where(input, select, textarea):hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .field :where(input, select, textarea)[aria-invalid] {
+    border-color: var(--color-feedback-error);
+    box-shadow: 0 0 0 var(--border-width) var(--color-feedback-error);
+  }
+
+  /* Radio cards */
+  .choice {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: var(--border-width) solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .choice:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .choice:has(input:checked) {
+    border-color: var(--color-brand-primary);
+    background: var(--color-surface-tint);
+    box-shadow: 0 0 0 var(--border-width) var(--color-brand-primary);
+  }
+
+  .choice:has(input:focus-visible) {
+    outline: var(--border-width-strong) solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .choice input {
+    flex-shrink: 0;
+    inline-size: var(--space-5);
+    block-size: var(--space-5);
+    margin: 0;
+    accent-color: var(--color-brand-primary);
+  }
+
+  .choice__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .choice__label {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-strong);
+  }
+
+  .choice__hint {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-default);
+    cursor: pointer;
+  }
+
+  .check input {
+    flex-shrink: 0;
+    inline-size: var(--space-5);
+    block-size: var(--space-5);
+    margin: 0;
+    accent-color: var(--color-brand-primary);
+  }
+
+  .enquiry__trap {
+    position: absolute;
+    inset-inline-start: -100vw;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+  }
+
+  .enquiry__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .enquiry__actions [hidden] {
+    display: none;
+  }
+
+  .enquiry__back {
+    min-block-size: var(--tap-target-min);
+    padding: 0 var(--space-2);
+    border: 0;
+    background: none;
+    color: var(--color-text-link);
+    font: inherit;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 0.4em;
+    cursor: pointer;
+  }
+
+  .enquiry__privacy {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .enquiry__privacy a {
+    color: var(--color-text-link);
+  }
+
+  .enquiry__status,
+  .enquiry__success {
+    padding: var(--space-4);
+    border-inline-start: var(--border-width-strong) solid var(--color-feedback-error);
+    background: var(--color-surface-subtle);
+    font-size: var(--text-sm);
+    color: var(--color-text-default);
+  }
+
+  .enquiry__success {
+    border-inline-start-color: var(--color-feedback-success);
+  }
+
+  .enquiry__status[hidden],
+  .enquiry__success[hidden] {
+    display: none;
+  }
+
+  .enquiry__status :global(p) {
+    margin: 0 0 var(--space-2);
+  }
+
+  .enquiry__status :global(ul) {
+    margin: 0;
+    padding-inline-start: var(--space-5);
+    list-style: disc;
+  }
+
+  .enquiry__status :global(.enquiry__fallback) {
+    display: inline-block;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-link);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (min-width: 40rem) {
+    .enquiry {
+      padding: var(--space-7);
+    }
+
+    .enquiry__grid,
+    .enquiry__choices {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .field--wide {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

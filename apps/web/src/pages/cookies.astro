@@ -1,0 +1,69 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Section from '@/components/ui/Section.astro';
+import Prose from '@/components/ui/Prose.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import { site } from '@/data/site';
+
+// DRAFT — accurate for the site as built today: it sets no cookies of its
+// own and loads no analytics or advertising scripts. Update this page before
+// any analytics tool (see docs/analytics-and-tracking.md) is switched on.
+---
+
+<BaseLayout
+  title="Cookie Policy | Talk Events"
+  description="What cookies and similar technologies the Talk Events website uses, and how you can control them."
+  path="/cookies"
+>
+  <PageHero eyebrow="Legal" title="Cookie policy" />
+
+  <Section ariaLabel="Cookie policy">
+    <Container width="header">
+      <Prose>
+        <p class="prose__meta">Last updated: 6 October 2026</p>
+
+        <h2>What cookies are</h2>
+        <p>
+          Cookies are small text files that a website can store on your phone or computer. They are
+          commonly used to remember your choices, keep a site secure, or measure how it is used.
+        </p>
+
+        <h2>What this website uses</h2>
+        <p>
+          The {site.name} website is built to work without tracking you. It does not use advertising
+          cookies, and it does not set cookies to follow you across other websites.
+        </p>
+        <ul>
+          <li>
+            <strong>Essential.</strong> Our hosting and security provider may set a short-lived cookie
+            to protect the site and our forms from abuse. The site cannot work safely without it, so
+            it does not need your consent.
+          </li>
+          <li>
+            <strong>Analytics.</strong> We do not currently use analytics cookies. If we introduce a
+            tool that does, we will ask for your consent first and update this page.
+          </li>
+        </ul>
+
+        <h2>Other websites we link to</h2>
+        <p>
+          When you follow a link to WhatsApp, Instagram or Google Maps, those services may set their
+          own cookies. Their cookie policies apply once you are on their sites.
+        </p>
+
+        <h2>Controlling cookies</h2>
+        <p>
+          You can block or delete cookies in your browser settings. Blocking essential cookies may
+          stop parts of the site, such as the enquiry form, from working properly.
+        </p>
+
+        <h2>More information</h2>
+        <p>
+          See our <a href="/privacy">privacy policy</a> for how we handle personal information, or
+          email <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> with any question.
+        </p>
+      </Prose>
+    </Container>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,122 @@
+---
+interface Props {
+  /** `sprig`: one leafy branch for a corner. `meadow`: a full-width row of them. */
+  variant?: 'sprig' | 'meadow';
+  class?: string;
+}
+
+const { variant = 'sprig', class: className } = Astro.props;
+
+type Sprig = {
+  /** Base of the stem. */
+  x: number;
+  y: number;
+  height: number;
+  /** How far the tip leans sideways, as a fraction of the height. */
+  lean: number;
+  leaves: number;
+};
+
+const round = (n: number) => Math.round(n * 10) / 10;
+
+// A stem is a quadratic curve from its base to a leaning tip; leaves alternate
+// either side of it, shrinking towards the tip, and a bud closes the stem.
+function draw({ x, y, height, lean, leaves }: Sprig) {
+  const tipX = x + height * lean;
+  const tipY = y - height;
+  const ctrlX = x - height * lean * 0.35;
+  const ctrlY = y - height * 0.55;
+  const at = (t: number) => ({
+    px: (1 - t) ** 2 * x + 2 * (1 - t) * t * ctrlX + t ** 2 * tipX,
+    py: (1 - t) ** 2 * y + 2 * (1 - t) * t * ctrlY + t ** 2 * tipY,
+    angle:
+      (Math.atan2(
+        2 * (1 - t) * (ctrlY - y) + 2 * t * (tipY - ctrlY),
+        2 * (1 - t) * (ctrlX - x) + 2 * t * (tipX - ctrlX),
+      ) *
+        180) /
+      Math.PI,
+  });
+
+  const parts = Array.from({ length: leaves }, (_, i) => {
+    const t = 0.22 + (i / leaves) * 0.74;
+    const { px, py, angle } = at(t);
+    const side = i % 2 === 0 ? -1 : 1;
+    const l = height * 0.2 * (1 - t * 0.55);
+    return {
+      transform: `translate(${round(px)} ${round(py)}) rotate(${round(angle + side * 48)})`,
+      d: `M0 0C${round(l * 0.3)} ${round(-l * 0.3)} ${round(l * 0.8)} ${round(-l * 0.22)} ${round(l)} 0C${round(l * 0.8)} ${round(l * 0.22)} ${round(l * 0.3)} ${round(l * 0.3)} 0 0M0 0H${round(l * 0.7)}`,
+    };
+  });
+
+  return {
+    stem: `M${round(x)} ${round(y)}Q${round(ctrlX)} ${round(ctrlY)} ${round(tipX)} ${round(tipY)}`,
+    bud: { cx: round(tipX), cy: round(tipY), r: round(height * 0.014 + 1.5) },
+    parts,
+  };
+}
+
+const viewBox = variant === 'meadow' ? '0 0 1440 300' : '0 0 240 360';
+
+const sprigs: Sprig[] =
+  variant === 'meadow'
+    ? // Uneven heights and leans so the row reads as grown, not stamped.
+      [
+        { x: 40, height: 210, lean: 0.22, leaves: 9 },
+        { x: 150, height: 130, lean: -0.18, leaves: 7 },
+        { x: 262, height: 250, lean: 0.1, leaves: 11 },
+        { x: 390, height: 150, lean: 0.3, leaves: 7 },
+        { x: 505, height: 195, lean: -0.24, leaves: 9 },
+        { x: 640, height: 120, lean: 0.16, leaves: 6 },
+        { x: 742, height: 235, lean: -0.08, leaves: 10 },
+        { x: 870, height: 140, lean: 0.26, leaves: 7 },
+        { x: 985, height: 205, lean: -0.2, leaves: 9 },
+        { x: 1105, height: 125, lean: 0.14, leaves: 6 },
+        { x: 1210, height: 255, lean: -0.12, leaves: 11 },
+        { x: 1330, height: 160, lean: -0.28, leaves: 8 },
+        { x: 1410, height: 215, lean: 0.06, leaves: 9 },
+      ].map((sprig) => ({ ...sprig, y: 300 }))
+    : [
+        { x: 60, y: 360, height: 330, lean: 0.3, leaves: 12 },
+        { x: 40, y: 360, height: 190, lean: 0.62, leaves: 8 },
+      ];
+
+const drawn = sprigs.map(draw);
+---
+
+<svg
+  class:list={['botanical', `botanical--${variant}`, className]}
+  viewBox={viewBox}
+  preserveAspectRatio={variant === 'meadow' ? 'xMidYMax slice' : 'xMinYMax meet'}
+  fill="none"
+  stroke="currentColor"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {drawn.map((sprig) => (
+    <g>
+      <path d={sprig.stem} />
+      {sprig.parts.map((leaf) => (
+        <path d={leaf.d} transform={leaf.transform} />
+      ))}
+      <circle cx={sprig.bud.cx} cy={sprig.bud.cy} r={sprig.bud.r} />
+    </g>
+  ))}
+</svg>
+
+<style>
+  .botanical {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    stroke-width: var(--border-width);
+    pointer-events: none;
+  }
+
+  /* Same reasoning as LineIcon: the art scales with its box, the line doesn't. */
+  .botanical :where(path, circle) {
+    vector-effect: non-scaling-stroke;
+  }
+</style>

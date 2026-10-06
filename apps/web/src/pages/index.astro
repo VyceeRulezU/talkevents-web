@@ -4,11 +4,11 @@ import Container from '@/components/ui/Container.astro';
 import Section from '@/components/ui/Section.astro';
 import Hero from '@/components/sections/Hero.astro';
 import ServiceGrid from '@/components/sections/ServiceGrid.astro';
+import PlanningBenefits from '@/components/sections/PlanningBenefits.astro';
 import ProcessSteps from '@/components/sections/ProcessSteps.astro';
-import FeaturedWork from '@/components/sections/FeaturedWork.astro';
+import Gallery from '@/components/sections/Gallery.astro';
 import Testimonial from '@/components/sections/Testimonial.astro';
 import LogoStrip from '@/components/sections/LogoStrip.astro';
-import JournalTeaser from '@/components/sections/JournalTeaser.astro';
 import CtaBand from '@/components/sections/CtaBand.astro';
 ---
 
@@ -19,41 +19,53 @@ import CtaBand from '@/components/sections/CtaBand.astro';
 >
   <Hero />
 
-  <Section id="services" ariaLabel="Our services">
-    <Container>
+  <Section ariaLabel="Why plan with Talk Events" class="section--benefits">
+    <Container width="header">
+      <PlanningBenefits />
+    </Container>
+  </Section>
+
+  <Section id="services" ariaLabel="Our services" class="section--services">
+    <Container width="header">
       <ServiceGrid />
     </Container>
   </Section>
 
-  <Section tint ariaLabel="How we work">
-    <Container>
+  {/* Featured events section is hidden for now. To bring it back, import
+      FeaturedWork from '@/components/sections/FeaturedWork.astro' and restore:
+      <Section id="featured" tint ariaLabel="Featured work" class="section--flush">
+        <Container width="header"><FeaturedWork /></Container>
+      </Section> */}
+
+  <Section id="gallery" tint ariaLabel="Our gallery" class="section--flush">
+    <Container width="header">
+      <Gallery />
+    </Container>
+  </Section>
+
+  <Section dark ariaLabel="How we work" class="surface-brand">
+    <Container width="header">
       <ProcessSteps />
     </Container>
   </Section>
 
-  <Section ariaLabel="Featured work">
-    <Container>
-      <FeaturedWork />
-    </Container>
-  </Section>
-
-  <Section dark ariaLabel="Testimonial" class="section--flush">
-    <Testimonial />
-  </Section>
-
-  <Section ariaLabel="Partners">
-    <Container>
+  <Section id="partners" tint ariaLabel="Partners">
+    <Container width="header">
       <LogoStrip />
     </Container>
   </Section>
 
-  <Section tint ariaLabel="From the journal">
-    <Container>
-      <JournalTeaser />
-    </Container>
+  {/* "From the journal" section is hidden for now. To bring it back, import
+      JournalTeaser from '@/components/sections/JournalTeaser.astro' and restore:
+      <Section ariaLabel="From the journal">
+        <Container width="header"><JournalTeaser /></Container>
+      </Section> */}
+
+  <Section id="testimonials" ariaLabel="Testimonials" class="section--flush">
+    <Testimonial />
   </Section>
 
-  <Section dark ariaLabel="Plan your event" class="section--flush">
+  <Section id="plan" ariaLabel="Plan your event" class="section--flush">
     <CtaBand />
   </Section>
 </BaseLayout>
@@ -61,5 +73,26 @@ import CtaBand from '@/components/sections/CtaBand.astro';
 <style>
   :global(.section--flush) {
     padding-block: 0;
+  }
+
+  /* The benefits component carries its own vertical rhythm, and the section is
+     sized to 50vh — .section padding would push it past that. */
+  :global(.section--benefits) {
+    padding-block: 0;
+  }
+
+  /* Same again: the service grid fills the viewport and pads itself. */
+  :global(.section--services),
+  :global(#featured),
+  :global(#gallery),
+  :global(#testimonials),
+  :global(#plan) {
+    scroll-margin-block-start: var(--header-height);
+  }
+
+  :global(.section--services) {
+    padding-block: 0;
+    /* The hero scroll cue lands here — keep the heading clear of the sticky header. */
+    scroll-margin-block-start: var(--header-height);
   }
 </style>

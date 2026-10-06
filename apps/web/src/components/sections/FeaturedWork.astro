@@ -1,50 +1,247 @@
 ---
-import PlaceholderMedia from '@/components/ui/PlaceholderMedia.astro';
+import Button from '@/components/ui/Button.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 
-const items = [1, 2, 3, 4];
+// Temporary decor-only stock photos (Pexels, free-to-use license, no
+// identifiable people) standing in for the client's own event photography.
+const items = [
+  {
+    name: 'featured-candlelit-table',
+    alt: 'A candlelit banquet table dressed with flowers and glassware at a reception in Lagos',
+  },
+  {
+    name: 'featured-red-gold-reception',
+    alt: 'Round reception tables with tall red floral centrepieces and gold chairs before a draped stage',
+  },
+  {
+    name: 'featured-warm-hall',
+    alt: 'A warmly lit hall of tables with gold satin chair sashes facing an illuminated head table',
+  },
+  {
+    name: 'featured-garden-banquet',
+    alt: 'A long banquet table under hanging greenery, lined with white flowers and gold chairs',
+  },
+  {
+    name: 'featured-gold-centrepiece',
+    alt: 'A round table set in ivory and gold around a candelabra and white floral centrepiece',
+  },
+];
 ---
 
-<SectionHeading eyebrow="Recent work" heading="Featured events" level="h2" />
+<div class="featured">
+  <div class="featured__intro">
+    <Eyebrow>Featured events</Eyebrow>
+    <SectionHeading heading="Every detail, delivered" id="featured-heading" />
+    <p class="featured__body">
+      A look at rooms we have planned, dressed and run, from intimate dinners to full halls.
+    </p>
+    <Button href="/portfolio" variant="accent-subtle">View portfolio</Button>
+  </div>
 
-<ul role="list" class="featured-work">
-  {items.map((item) => (
-    <li class="featured-work__item">
-      <PlaceholderMedia label={`Event ${item}`} />
-    </li>
-  ))}
-</ul>
+  <div class="featured__gallery">
+    <ul role="list" class="featured__track" tabindex="0" aria-labelledby="featured-heading" data-featured-track>
+      {items.map((item) => (
+        <li class="featured__item">
+          <picture>
+            <source srcset={`/images/${item.name}.webp`} type="image/webp" />
+            <img src={`/images/${item.name}.jpg`} alt={item.alt} width="1000" height="667" loading="lazy" decoding="async" />
+          </picture>
+        </li>
+      ))}
+    </ul>
 
-<p class="featured-work__link">
-  <a href="/portfolio">View the full portfolio</a>
-</p>
+    <div class="featured__controls">
+      <button type="button" class="featured__arrow" aria-label="Previous events" data-featured-step="-1">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <path d="m14 7-5 5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button type="button" class="featured__arrow" aria-label="More events" data-featured-step="1">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <path d="m10 7 5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // The track is a native scroller (swipe, wheel and keyboard work without JS);
+  // the arrows just page it by one photo and disable at either end.
+  for (const track of document.querySelectorAll<HTMLElement>('[data-featured-track]')) {
+    const gallery = track.parentElement;
+    const arrows = gallery?.querySelectorAll<HTMLButtonElement>('[data-featured-step]') ?? [];
+
+    const sync = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      for (const arrow of arrows) {
+        const forward = arrow.dataset.featuredStep === '1';
+        arrow.disabled = forward ? track.scrollLeft >= max - 1 : track.scrollLeft <= 1;
+      }
+    };
+
+    for (const arrow of arrows) {
+      arrow.addEventListener('click', () => {
+        const item = track.querySelector<HTMLElement>('.featured__item');
+        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        const step = (item?.offsetWidth ?? track.clientWidth) + gap;
+        track.scrollBy({ left: step * Number(arrow.dataset.featuredStep) });
+      });
+    }
+
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  }
+</script>
 
 <style>
-  .featured-work {
-    margin-block-start: var(--space-7);
+  .featured {
+    /* Fills the viewport; the photos stretch to take that height. */
+    min-block-size: calc(100vh - var(--header-height));
+    min-block-size: calc(100dvh - var(--header-height));
     display: grid;
+    gap: var(--space-6);
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    padding-block: var(--space-8);
+  }
+
+  .featured__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .featured__intro :global(.eyebrow) {
+    margin: 0;
+    padding-block-end: var(--space-3);
+    border-block-end: var(--border-width) solid var(--color-border-default);
+  }
+
+  .featured__body {
+    max-inline-size: var(--measure-narrow);
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .featured__intro :global(.section-heading__title) {
+    font-size: var(--text-3xl);
+  }
+
+  .featured__intro :global(.button) {
+    margin-block-start: var(--space-2);
+  }
+
+  .featured__gallery {
+    min-inline-size: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    align-self: stretch;
+  }
+
+  .featured__track {
+    --featured-visible: 1.25;
+    flex: 1;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - var(--grid-gap) * (var(--featured-visible) - 1)) / var(--featured-visible));
     gap: var(--grid-gap);
-    grid-template-columns: repeat(2, 1fr);
+    min-block-size: var(--tile-min-height);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
   }
 
-  .featured-work__item {
-    aspect-ratio: var(--aspect-gallery);
+  .featured__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .featured__item {
+    position: relative;
     overflow: hidden;
+    scroll-snap-align: start;
   }
 
-  .featured-work__link {
-    margin-block-start: var(--space-6);
+  .featured__item img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-slow) var(--ease-out);
   }
 
-  .featured-work__link a {
-    font-weight: var(--font-weight-bold);
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
+  .featured__item:hover img {
+    transform: scale(1.04);
+  }
+
+  .featured__controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+  }
+
+  .featured__arrow {
+    display: grid;
+    place-items: center;
+    inline-size: var(--tap-target-min);
+    block-size: var(--tap-target-min);
+    padding: 0;
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-circle);
+    background: var(--color-surface-card);
+    color: var(--color-text-strong);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard),
+      opacity var(--duration-base) var(--ease-standard);
+  }
+
+  .featured__arrow svg {
+    inline-size: var(--icon-size-sm);
+    block-size: var(--icon-size-sm);
+  }
+
+  .featured__arrow:hover:not(:disabled) {
+    background: var(--color-brand-primary);
+    color: var(--color-text-on-dark);
+  }
+
+  .featured__arrow:disabled {
+    opacity: 0.4;
+    cursor: default;
   }
 
   @media (min-width: 48rem) {
-    .featured-work {
-      grid-template-columns: repeat(4, 1fr);
+    .featured__track {
+      --featured-visible: 2;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .featured {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+      gap: var(--space-8);
+    }
+
+    .featured__track {
+      --featured-visible: 3;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured__track {
+      scroll-behavior: auto;
     }
   }
 </style>

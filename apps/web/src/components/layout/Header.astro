@@ -8,7 +8,7 @@ const currentPath = new URL(Astro.request.url).pathname;
 <header class="header">
   <div class="header__inner">
     <a href="/" class="header__logo" aria-label={`${site.name}, home`}>
-      <img src="/te-logo-bw-compact.png" alt={site.name} width="490" height="84" />
+      <img src="/te-logo-bw-nav.png" alt={site.name} width="952" height="249" />
     </a>
 
     <nav class="header__nav" aria-label="Primary">
@@ -73,8 +73,20 @@ const currentPath = new URL(Astro.request.url).pathname;
     height: var(--header-height);
     display: flex;
     align-items: center;
-    background: var(--color-surface-page);
     border-block-end: var(--border-width) solid var(--color-border-subtle);
+  }
+
+  /* Frosted glass: the page shows through, blurred, as it scrolls under. The
+     blur sits on a pseudo-element because backdrop-filter on .header itself
+     would trap the fixed-position mobile panel inside the bar. */
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--color-surface-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+    backdrop-filter: var(--blur-glass);
   }
 
   .header__inner {
@@ -95,10 +107,10 @@ const currentPath = new URL(Astro.request.url).pathname;
   }
 
   .header__logo img {
-    /* Compact crop is ~5.8:1 (tight-cropped mark + wordmark, tagline and
-       excess whitespace removed) — height is tuned for on-screen width,
-       not for parity with the old height value used on the full lockup. */
-    height: 1.9rem;
+    /* Mark + wordmark, tagline removed (~3.8:1). The crop keeps the whole
+       mark, including the tail that hangs below the wordmark's baseline, so
+       the height is the mark's height, not the lettering's. */
+    height: 2.95rem;
     width: auto;
   }
 
@@ -217,7 +229,7 @@ const currentPath = new URL(Astro.request.url).pathname;
     }
 
     .header__logo img {
-      height: 1.6rem;
+      height: 2.5rem;
     }
 
     .header__nav {

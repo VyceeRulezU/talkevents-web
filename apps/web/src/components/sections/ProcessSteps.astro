@@ -29,6 +29,12 @@ const steps = [
     grid-template-columns: 1fr;
   }
 
+  /* A hairline over each step ties the four together on the brand band. */
+  .process-step {
+    padding-block-start: var(--space-5);
+    border-block-start: var(--border-width) solid var(--color-border-default);
+  }
+
   .process-step__number {
     display: block;
     font-family: var(--font-display);

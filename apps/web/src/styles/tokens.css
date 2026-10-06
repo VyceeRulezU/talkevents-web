@@ -68,6 +68,7 @@
   --color-surface-dark:     var(--palette-ink-900);
   --color-surface-brand:    var(--palette-blue-800);
   --color-surface-card:     var(--palette-white);
+  --color-surface-glass:    rgb(255 255 255 / 0.74);        /* frosted navbar — pair with --blur-glass */
 
   --color-border-subtle:  var(--palette-ink-200);
   --color-border-default: var(--palette-ink-300);
@@ -89,9 +90,16 @@
      opaque tint keeps it legible regardless of where the cover-crop lands
      (a side gradient tuned for a wide crop can leave narrow crops too light). */
   --overlay-hero-mobile: rgb(11 11 11 / 0.6);
-  --overlay-tile:  linear-gradient(180deg, rgb(11 11 11 / 0.05) 35%, rgb(11 11 11 / 0.72) 100%);
-  --overlay-band:  rgb(20 44 90 / 0.72);                    /* brand-tinted CTA band */
+  /* Tile copy is centred and sits in the lower half, so the scrim covers the
+     whole photo and deepens towards the bottom edge. */
+  --overlay-tile:  linear-gradient(180deg, rgb(11 11 11 / 0.2) 0%, rgb(11 11 11 / 0.5) 45%, rgb(11 11 11 / 0.82) 100%);
+  --overlay-band:  rgb(20 44 90 / 0.72);                    /* brand-tinted band */
+  /* CTA band: ink scrim, heaviest on the left where the copy sits. Below md
+     the copy spans the photo, so the scrim is flat. */
+  --overlay-cta:   linear-gradient(90deg, rgb(11 11 11 / 0.86) 0%, rgb(11 11 11 / 0.7) 34%, rgb(11 11 11 / 0.34) 68%, rgb(11 11 11 / 0.18) 100%);
+  --overlay-cta-mobile: rgb(11 11 11 / 0.68);
   --overlay-testimonial: rgb(14 32 68 / 0.70);
+  --overlay-lightbox: rgb(11 11 11 / 0.92);                 /* backdrop behind an opened gallery photo */
   --overlay-gloss: linear-gradient(180deg, rgb(255 255 255 / 0.32) 0%, rgb(255 255 255 / 0) 45%, rgb(0 0 0 / 0.14) 100%);
 
   /* ---------- 3. TYPOGRAPHY ---------------------------------------------- */
@@ -182,6 +190,7 @@
   --shadow-sm: 0 1px 2px rgb(11 11 11 / 0.08);
   --shadow-md: 0 8px 24px rgb(11 11 11 / 0.12);
   --shadow-hero-card: 0 24px 60px rgb(11 11 11 / 0.28);
+  --blur-glass: blur(18px) saturate(1.6);
 
   /* ---------- 7. MOTION --------------------------------------------------- */
   --duration-fast: 150ms;
@@ -201,10 +210,15 @@
 
   /* ---------- 9. COMPONENT-LEVEL ALIASES --------------------------------- */
   --tap-target-min: 3rem;         /* 48px — WCAG 2.5.5 / mobile */
+  --icon-size-sm: 1.5rem;         /* 24px — house icon grid (design-system.md §6) */
+  --icon-size-lg: 4rem;           /* 64px — decorative line-art above the fold */
   --button-height: 3rem;
   --button-padding-inline: var(--space-6);
   --field-height: 3rem;
-  --aspect-tile: 3 / 4;              /* service tiles (portrait) */
+  --aspect-tile: 3 / 4;              /* portrait tiles */
+  --tile-min-height: 16rem;          /* photo tiles — floor when the row can't fill the section */
+  --logo-footer-width: 13.75rem;     /* 220px */
+  --logo-partner-height: 6rem;
   --aspect-hero: 16 / 9;
   --aspect-gallery: 4 / 5;
   --aspect-og: 1200 / 630;

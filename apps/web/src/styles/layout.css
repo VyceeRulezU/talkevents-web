@@ -15,6 +15,11 @@
     max-width: var(--container-wide);
   }
 
+  /* Same measure as the navbar and hero, so section edges line up with them. */
+  .container--header {
+    max-width: var(--container-header);
+  }
+
   .section {
     padding-block: var(--section-padding-block);
   }

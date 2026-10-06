@@ -1,0 +1,215 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import LineIcon from '@/components/ui/LineIcon.astro';
+
+type BenefitIcon = 'bloom' | 'botanical' | 'rings' | 'toast';
+
+type Benefit = {
+  icon: BenefitIcon;
+  /** Split into lines so each heading breaks where the design breaks it. */
+  title: [string, string];
+  body: string;
+};
+
+const benefits: Benefit[] = [
+  {
+    icon: 'bloom',
+    title: ['Personalized', 'Experience'],
+    body: 'Every detail tailored to your vision and style.',
+  },
+  {
+    icon: 'botanical',
+    title: ['Bespoke', 'Designs'],
+    body: 'Unique concepts crafted to inspire and enchant.',
+  },
+  {
+    icon: 'rings',
+    title: ['Flawless', 'Execution'],
+    body: 'Seamless planning and perfect coordination.',
+  },
+  {
+    icon: 'toast',
+    title: ['Memorable', 'Moments'],
+    body: 'We create memories that last a lifetime.',
+  },
+];
+---
+
+<div class="planning-benefits" data-reveal>
+  <header class="planning-benefits__header" data-reveal-item>
+    <SectionHeading heading="We plan. You celebrate." align="center" />
+    <p class="planning-benefits__lede">
+      From intimate gatherings to grand celebrations, we create timeless weddings that
+      reflect your love story and leave a lasting impression.
+    </p>
+    <span class="planning-benefits__rule" aria-hidden="true"></span>
+  </header>
+
+  <ul role="list" class="planning-benefits__grid">
+    {benefits.map((benefit) => (
+      <li class="benefit" data-reveal-item>
+        <span class="benefit__icon">
+          <LineIcon name={benefit.icon} />
+        </span>
+        <h3 class="benefit__title">
+          {benefit.title.map((line) => (
+            <span class="benefit__title-line">{line}</span>
+          ))}
+        </h3>
+        <p class="benefit__body">{benefit.body}</p>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<script>
+  // Fade the header and the four benefit columns in as the section scrolls into
+  // view. Purely decorative: the group is only "armed" from here, so with JS off
+  // (or reduced motion) nothing is ever hidden waiting on an animation.
+  const motionOk = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
+  if (motionOk && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          (entry.target as HTMLElement).dataset.revealState = 'shown';
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0.15 },
+    );
+
+    for (const group of document.querySelectorAll<HTMLElement>('[data-reveal]')) {
+      group.dataset.revealState = 'armed';
+      for (const item of group.querySelectorAll<HTMLElement>('[data-reveal-item]')) {
+        observer.observe(item);
+      }
+    }
+  }
+</script>
+
+<style>
+  .planning-benefits {
+    /* The section holds half the viewport, content optically centred inside it. */
+    min-block-size: 50vh;
+    min-block-size: 50dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block-start: var(--space-8);
+    padding-block-end: var(--space-7);
+    text-align: center;
+  }
+
+  .planning-benefits__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    margin-inline: auto;
+  }
+
+  .planning-benefits__lede {
+    max-inline-size: var(--measure-prose);
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-muted);
+    text-wrap: balance;
+  }
+
+  .planning-benefits__rule {
+    inline-size: var(--space-7);
+    block-size: var(--border-width);
+    background-color: var(--color-border-default);
+  }
+
+  .planning-benefits__grid {
+    display: grid;
+    gap: var(--space-7) var(--space-6);
+    grid-template-columns: 1fr;
+    margin-block-start: var(--space-8);
+  }
+
+  .benefit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .benefit__icon {
+    display: flex;
+    color: var(--color-text-muted);
+    --icon-size: var(--icon-size-lg);
+  }
+
+  .benefit__title {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .benefit__title-line {
+    display: block;
+  }
+
+  .benefit__body {
+    max-inline-size: var(--measure-narrow);
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+    text-wrap: balance;
+  }
+
+  @media (min-width: 30rem) {
+    .planning-benefits__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .planning-benefits__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Scroll reveal. Stagger delays are fractions of --duration-slow, so the
+     global reduced-motion net in tokens.css collapses them along with the
+     transitions themselves. */
+  [data-reveal-item] {
+    --reveal-delay: 0s;
+    transition:
+      opacity var(--duration-slow) var(--ease-out),
+      transform var(--duration-slow) var(--ease-out);
+    transition-delay: var(--reveal-delay);
+  }
+
+  [data-reveal-item]:nth-child(2) {
+    --reveal-delay: calc(var(--duration-slow) * 0.1);
+  }
+
+  [data-reveal-item]:nth-child(3) {
+    --reveal-delay: calc(var(--duration-slow) * 0.2);
+  }
+
+  [data-reveal-item]:nth-child(4) {
+    --reveal-delay: calc(var(--duration-slow) * 0.3);
+  }
+
+  [data-reveal='armed'] [data-reveal-item] {
+    opacity: 0;
+    transform: translateY(var(--space-3));
+  }
+
+  [data-reveal='shown'] [data-reveal-item] {
+    opacity: 1;
+    transform: none;
+  }
+</style>

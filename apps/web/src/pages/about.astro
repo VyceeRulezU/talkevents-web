@@ -1,0 +1,193 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import LineIcon from '@/components/ui/LineIcon.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import ProcessSteps from '@/components/sections/ProcessSteps.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+
+// Copy is deliberately free of figures (years, event counts, team size):
+// none are confirmed yet. See content-guidelines.md before adding any.
+const promises = [
+  {
+    icon: 'botanical',
+    title: 'A plan you can see',
+    body: 'The timeline, the vendor list and the budget are shared with you as they take shape. Nothing goes ahead until you have approved it.',
+  },
+  {
+    icon: 'rings',
+    title: 'One point of contact',
+    body: 'You deal with one coordinator from the first conversation to the last guest leaving, so nothing is lost between people.',
+  },
+  {
+    icon: 'bloom',
+    title: 'Your money, treated with care',
+    body: 'We plan to the budget you set, show you where it is going, and flag a decision before it becomes a cost.',
+  },
+  {
+    icon: 'toast',
+    title: 'Calm on the day',
+    body: 'A coordinator you already know runs the day to the agreed programme, so you can be a host and not a manager.',
+  },
+] as const;
+---
+
+<BaseLayout
+  title="About Talk Events | Abuja Event Planners"
+  description="Talk Events is an event planning and coordination company in Maitama, Abuja. We plan and run weddings, corporate events and celebrations so the day goes exactly as planned."
+  path="/about"
+>
+  <PageHero eyebrow="About us" title="The people behind your plan" />
+
+  <Section ariaLabel="Who we are">
+    <Container width="header">
+      <div class="about-intro">
+        <div class="about-intro__copy">
+          <SectionHeading eyebrow="Who we are" heading="An organised team for the days that matter" />
+          <p>
+            Talk Events is an event planning and coordination company based in Maitama, Abuja. We plan
+            and run weddings, corporate events and celebrations across the city, and we are built
+            around one promise: your plan, perfectly executed.
+          </p>
+          <p>
+            Every event has a lot of moving parts: venues, vendors, guests, timings and money. Our job
+            is to hold all of it together, so that you make the decisions that matter and leave the
+            chasing, checking and coordinating to us.
+          </p>
+          <p>
+            We work in the open. You see the plan as it comes together, you approve what goes ahead,
+            and on the day the person running the room is someone you already know.
+          </p>
+        </div>
+        <picture class="about-intro__media">
+          <source srcset="/images/featured-warm-hall.webp" type="image/webp" />
+          <img
+            src="/images/featured-warm-hall.jpg"
+            alt="A warmly lit hall of tables with gold satin chair sashes facing an illuminated head table"
+            width="1000"
+            height="667"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      </div>
+    </Container>
+  </Section>
+
+  <Section tint ariaLabel="What you can expect">
+    <Container width="header">
+      <SectionHeading eyebrow="How we look after you" heading="What you can expect from us" />
+      <ul role="list" class="promises">
+        {promises.map((promise) => (
+          <li class="promise">
+            <span class="promise__icon"><LineIcon name={promise.icon} /></span>
+            <h3 class="promise__title">{promise.title}</h3>
+            <p class="promise__body">{promise.body}</p>
+          </li>
+        ))}
+      </ul>
+    </Container>
+  </Section>
+
+  <Section dark ariaLabel="How we work" class="surface-brand">
+    <Container width="header">
+      <ProcessSteps />
+    </Container>
+  </Section>
+
+  <Section ariaLabel="Plan your event" class="section--flush">
+    <CtaBand />
+  </Section>
+</BaseLayout>
+
+<style>
+  :global(.section--flush) {
+    padding-block: 0;
+  }
+
+  .about-intro {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .about-intro__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-inline-size: var(--measure-prose);
+  }
+
+  .about-intro__copy p {
+    margin: 0;
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-default);
+  }
+
+  .about-intro__media {
+    position: relative;
+    display: block;
+    aspect-ratio: var(--aspect-gallery);
+    overflow: hidden;
+  }
+
+  .about-intro__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .promises {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+    margin-block-start: var(--space-7);
+  }
+
+  .promise {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    background: var(--color-surface-card);
+  }
+
+  .promise__icon {
+    display: flex;
+    color: var(--color-brand-primary);
+    --icon-size: var(--space-7);
+  }
+
+  .promise__title {
+    margin: 0;
+    font-size: var(--text-lg);
+  }
+
+  .promise__body {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 40rem) {
+    .promises {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .about-intro {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: var(--space-9);
+    }
+
+    .promises {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
