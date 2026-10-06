@@ -28,10 +28,13 @@ interface Props {
   description: string;
   path: string;
   image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article' | 'profile';
+  person?: { givenName: string; familyName: string };
   noindex?: boolean;
 }
 
-const { title, description, path, image, noindex } = Astro.props;
+const { title, description, path, image, imageAlt, type, person, noindex } = Astro.props;
 ---
 
 <!doctype html>
@@ -40,7 +43,8 @@ const { title, description, path, image, noindex } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="google-site-verification" content="2CQ7u8Gr1m5XMuNH1wx8WRWJO7sTZqpc8R7o0M8tmfs" />
-    <Seo title={title} description={description} path={path} image={image} noindex={noindex} />
+    <Seo title={title} description={description} path={path} image={image} imageAlt={imageAlt} type={type} person={person} noindex={noindex} />
+    <slot name="head" />
     <JsonLd schema={organizationSchema()} />
     <JsonLd schema={websiteSchema()} />
   </head>

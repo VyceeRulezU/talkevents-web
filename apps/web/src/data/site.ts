@@ -6,7 +6,7 @@ export const site = {
   name: 'Talk Events',
   tagline: 'Your plan, perfectly executed',
   legalName: '{{PLACEHOLDER: legal name}}',
-  url: 'https://talkevents.example',
+  url: 'https://talkevents.ng',
   description:
     'Talk Events plans and coordinates weddings, corporate events and celebrations in Abuja, so your day runs exactly as planned.',
   locale: 'en-NG',
@@ -17,7 +17,8 @@ export const site = {
   contact: {
     phone: '+234 817 747 7761',
     phoneHref: 'tel:+2348177477761',
-    whatsapp: '{{PLACEHOLDER: WhatsApp number, e.g. 2348000000000}}',
+    // Digits only, country code first: the format wa.me links need.
+    whatsapp: '2348177477761',
     email: 'contact@talkevents.ng',
     address: {
       streetAddress: 'No. 14 Nike Lake Street, Maitama',
@@ -33,6 +34,27 @@ export const site = {
     facebook: '{{PLACEHOLDER: Facebook URL}}',
     tiktok: '{{PLACEHOLDER: TikTok URL}}',
   },
+} as const;
+
+// The founder, as search engines should know her. One source for the About
+// page copy, the Person structured data and the organisation's `founder`.
+export const founder = {
+  name: 'Pauline Okoye',
+  givenName: 'Pauline',
+  familyName: 'Okoye',
+  jobTitle: 'CEO and Founder',
+  image: '/images/team/pauline-okoye.webp',
+  /** Where her profile lives on this site. */
+  path: '/about',
+  anchor: 'founder',
+  /** Her own public profiles (tracking parameters removed). */
+  socials: [
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/pauline-okoye-9a936b93/', icon: 'linkedin' },
+    { label: 'Instagram', href: 'https://www.instagram.com/paulineokoye_', icon: 'instagram' },
+    { label: 'TikTok', href: 'https://www.tiktok.com/@pauline_okoye08', icon: 'tiktok' },
+  ],
+  description:
+    'Pauline Okoye is the CEO and Founder of Talk Events, an event planning and coordination company in Abuja, Nigeria, and the CEO of Premier Chilling Services. She has more than 12 years of experience in the events industry.',
 } as const;
 
 export type NavLink = {
@@ -67,6 +89,9 @@ export const serviceNav: NavLink[] = [
   { label: 'Wedding planning', href: '/services#weddings' },
   { label: 'Corporate events', href: '/services#corporate-events' },
   { label: 'Birthdays & milestones', href: '/services#celebrations' },
+  { label: 'Cooling services', href: '/services#cooling' },
+  { label: 'Drinks services', href: '/services#drinks' },
+  { label: 'Ushering services', href: '/services#ushering' },
 ];
 
 export const legalNav: NavLink[] = [

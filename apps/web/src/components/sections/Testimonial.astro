@@ -3,30 +3,28 @@ import SectionHeading from '@/components/ui/SectionHeading.astro';
 import Botanical from '@/components/ui/Botanical.astro';
 
 type Quote = {
-  quote: string;
+  /** One entry per paragraph, in the client's own words. */
+  quote: string[];
   name: string;
   event: string;
   /** Optional portrait in /public — only with the client's written consent (NDPA). */
   avatar?: string;
 };
 
-// Never fabricate testimonials — these are layout placeholders. Replace once
-// the client shares consented quotes (docs/open-questions.md #16).
+// Real client words only — never fabricate or reword a testimonial. Add more
+// here as the client shares them (with consent); with two or more, the section
+// becomes an auto-advancing carousel on its own.
 const quotes: Quote[] = [
   {
-    quote: 'Placeholder for a wedding client’s words about how their day was planned and run. To be replaced with a real, consented quote.',
-    name: 'Client name',
-    event: 'Wedding',
-  },
-  {
-    quote: 'Placeholder for a corporate client’s words about how their event was delivered. To be replaced with a real, consented quote.',
-    name: 'Client name',
-    event: 'Corporate event',
-  },
-  {
-    quote: 'Placeholder for a celebrant’s words about their milestone celebration. To be replaced with a real, consented quote.',
-    name: 'Client name',
-    event: 'Birthday celebration',
+    // From the client's own testimonial card (Family Fish Grilling Festival 2026).
+    quote: [
+      'Let me sincerely express my appreciation and say thank you very much for the opportunity to work with you.',
+      'It was truly a great experience, and I genuinely admire your professionalism and creativity.',
+      'I strongly believe you will go far in this career, and I pray for greater doors, bigger opportunities, and continuous wins for you.',
+      'Looking forward to working with you again on future opportunities. Thank you once again.',
+    ],
+    name: 'Planning committee chair',
+    event: 'Family Fish Grilling Festival 2026',
   },
 ];
 
@@ -55,7 +53,9 @@ const initials = (name: string) =>
         <figure class="testimonial__figure">
           <blockquote class="testimonial__quote">
             <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
-            <p>{item.quote}</p>
+            <div class="testimonial__text">
+              {item.quote.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
             <span class="testimonial__mark" aria-hidden="true">&rdquo;</span>
           </blockquote>
           <figcaption class="testimonial__author">
@@ -245,10 +245,16 @@ const initials = (name: string) =>
     margin: 0;
   }
 
+  .testimonial__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
   .testimonial__quote p {
     margin: 0;
     font-family: var(--font-display);
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
     line-height: var(--leading-relaxed);
     color: var(--color-text-default);
     text-wrap: balance;

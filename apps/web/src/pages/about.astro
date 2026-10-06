@@ -7,9 +7,13 @@ import LineIcon from '@/components/ui/LineIcon.astro';
 import PageHero from '@/components/sections/PageHero.astro';
 import ProcessSteps from '@/components/sections/ProcessSteps.astro';
 import CtaBand from '@/components/sections/CtaBand.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import { founder } from '@/data/site';
+import { founderSchema } from '@/lib/schema';
 
-// Copy is deliberately free of figures (years, event counts, team size):
-// none are confirmed yet. See content-guidelines.md before adding any.
+// Figures on this page (12+ years, team of seven, named partners) were
+// supplied by the client. Do not add others without confirmation — see
+// content-guidelines.md.
 const promises = [
   {
     icon: 'botanical',
@@ -35,10 +39,14 @@ const promises = [
 ---
 
 <BaseLayout
-  title="About Talk Events | Abuja Event Planners"
-  description="Talk Events is an event planning and coordination company in Maitama, Abuja. We plan and run weddings, corporate events and celebrations so the day goes exactly as planned."
+  title="Pauline Okoye, CEO & Founder of Talk Events | Abuja Event Planners"
+  description="Meet Pauline Okoye, CEO and Founder of Talk Events, the Abuja event planning and coordination company. Over 12 years in the events industry, leading a team of seven."
   path="/about"
+  type="profile"
+  person={founder}
 >
+  <JsonLd slot="head" schema={founderSchema()} />
+
   <PageHero eyebrow="About us" title="The people behind your plan" />
 
   <Section ariaLabel="Who we are">
@@ -47,9 +55,9 @@ const promises = [
         <div class="about-intro__copy">
           <SectionHeading eyebrow="Who we are" heading="An organised team for the days that matter" />
           <p>
-            Talk Events is an event planning and coordination company based in Maitama, Abuja. We plan
-            and run weddings, corporate events and celebrations across the city, and we are built
-            around one promise: your plan, perfectly executed.
+            Talk Events is an event planning and coordination company based in Maitama, Abuja. Led by
+            our founder, Pauline Okoye, and a team of seven, we plan and run weddings, corporate events
+            and celebrations across the city, built around one promise: your plan, perfectly executed.
           </p>
           <p>
             Every event has a lot of moving parts: venues, vendors, guests, timings and money. Our job
@@ -76,7 +84,84 @@ const promises = [
     </Container>
   </Section>
 
-  <Section tint ariaLabel="What you can expect">
+  <Section tint id="founder" ariaLabel="Our founder">
+    <Container width="header">
+      <div class="founder">
+        <figure class="founder__portrait">
+          <img
+            src="/images/team/pauline-okoye.webp"
+            alt="Pauline Okoye, CEO and Founder of Talk Events"
+            width="480"
+            height="480"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="founder__copy">
+          <SectionHeading eyebrow="Our founder" heading="Pauline Okoye" id="pauline-okoye" />
+          <p class="founder__role">CEO and Founder, Talk Events</p>
+          <p>
+            Talk Events was founded by <strong>Pauline Okoye</strong>, who has spent more than 12 years
+            in the events industry. In that time she has planned and coordinated weddings, celebrations and
+            corporate occasions alongside some of the best-known names in the business, including
+            Qmara Vie Planners and Blue Velvet.
+          </p>
+          <p>
+            That experience shapes how Talk Events works: a clear plan agreed early, vendors who know
+            exactly what is expected of them, and a calm, well-briefed team on the day. Pauline leads
+            a team of seven who share that approach and stay with each client from the first
+            conversation to the final clear-down.
+          </p>
+          <p>
+            Pauline is also the CEO of Premier Chilling Services, which provides cooling and drinks
+            services for events. It means the details guests notice most, a cold drink served on time
+            among them, are handled by people we know and trust.
+          </p>
+          <ul role="list" class="founder__socials">
+            {founder.socials.map((social) => (
+              <li>
+                <a href={social.href} target="_blank" rel="me noopener">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    {social.icon === 'linkedin' && (
+                      <>
+                        <rect x="4" y="4" width="16" height="16" rx="2.5" />
+                        <path d="M8 10.5V16M8 7.8v.01M11.5 16v-3.2c0-1.3.9-2.3 2.2-2.3s2.3 1 2.3 2.3V16M11.5 10.5V16" />
+                      </>
+                    )}
+                    {social.icon === 'instagram' && (
+                      <>
+                        <rect x="4" y="4" width="16" height="16" rx="4.5" />
+                        <circle cx="12" cy="12" r="3.6" />
+                        <path d="M16.6 7.4h.01" />
+                      </>
+                    )}
+                    {social.icon === 'tiktok' && <path d="M14 3v11.2a3.3 3.3 0 1 1-3.3-3.3M14 3c.3 2.6 1.9 4.3 4.5 4.6" />}
+                  </svg>
+                  <span class="visually-hidden">{founder.name} on {social.label} (opens in a new tab)</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <dl class="founder__facts">
+            <div>
+              <dt>Years in the industry</dt>
+              <dd>12+</dd>
+            </div>
+            <div>
+              <dt>People on the team</dt>
+              <dd>7</dd>
+            </div>
+            <div>
+              <dt>Home base</dt>
+              <dd>Abuja</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </Container>
+  </Section>
+
+  <Section ariaLabel="What you can expect">
     <Container width="header">
       <SectionHeading eyebrow="How we look after you" heading="What you can expect from us" />
       <ul role="list" class="promises">
@@ -153,7 +238,105 @@ const promises = [
     flex-direction: column;
     gap: var(--space-3);
     padding: var(--space-6);
-    background: var(--color-surface-card);
+    background: var(--color-surface-subtle);
+  }
+
+  .founder {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .founder__portrait {
+    inline-size: 100%;
+    max-inline-size: 30rem;
+    margin: 0;
+    aspect-ratio: 1;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  .founder__portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .founder__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-inline-size: var(--measure-prose);
+  }
+
+  .founder__copy p {
+    margin: 0;
+    line-height: var(--leading-relaxed);
+  }
+
+  .founder__copy .founder__role {
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .founder__socials {
+    display: flex;
+    gap: var(--space-2);
+    margin-inline-start: calc(var(--space-3) * -1);
+  }
+
+  .founder__socials a {
+    display: grid;
+    place-items: center;
+    inline-size: var(--tap-target-min);
+    block-size: var(--tap-target-min);
+    border-radius: var(--radius-circle);
+    color: var(--color-brand-primary);
+    transition:
+      background-color var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard);
+  }
+
+  .founder__socials a:hover {
+    background: var(--color-brand-primary);
+    color: var(--color-text-on-dark);
+  }
+
+  .founder__socials svg {
+    inline-size: var(--icon-size-sm);
+    block-size: var(--icon-size-sm);
+  }
+
+  .founder__facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin: var(--space-4) 0 0;
+    padding-block-start: var(--space-5);
+    border-block-start: var(--border-width) solid var(--color-border-default);
+  }
+
+  .founder__facts div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--space-1);
+  }
+
+  .founder__facts dt {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .founder__facts dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-light);
+    line-height: 1;
+    color: var(--color-brand-primary);
   }
 
   .promise__icon {
@@ -183,6 +366,11 @@ const promises = [
   @media (min-width: 64rem) {
     .about-intro {
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: var(--space-9);
+    }
+
+    .founder {
+      grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
       gap: var(--space-9);
     }
 

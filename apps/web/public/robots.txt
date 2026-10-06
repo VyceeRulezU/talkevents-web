@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://talkevents.example/sitemap-index.xml
+Sitemap: https://talkevents.ng/sitemap-index.xml

@@ -9,8 +9,10 @@ interface Props {
   /** Share image, 1200×630 (--aspect-og). Defaults to /og-default.jpg in /public. */
   image?: string;
   imageAlt?: string;
-  /** `article` for journal posts; everything else is a `website`. */
-  type?: 'website' | 'article';
+  /** `article` for journal posts, `profile` for a page about a person. */
+  type?: 'website' | 'article' | 'profile';
+  /** For `profile` pages: who the page is about. */
+  person?: { givenName: string; familyName: string };
   noindex?: boolean;
 }
 
@@ -21,6 +23,7 @@ const {
   image = '/og-default.jpg',
   imageAlt = `${site.name}: ${site.tagline}`,
   type = 'website',
+  person,
   noindex = false,
 } = Astro.props;
 const canonical = canonicalUrl(path);
@@ -55,6 +58,12 @@ const ogImageType = /\.png$/i.test(image) ? 'image/png' : /\.webp$/i.test(image)
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:locale" content="en_NG" />
+{type === 'profile' && person && (
+  <>
+    <meta property="profile:first_name" content={person.givenName} />
+    <meta property="profile:last_name" content={person.familyName} />
+  </>
+)}
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:secure_url" content={ogImage} />
 <meta property="og:image:type" content={ogImageType} />

@@ -1,0 +1,9 @@
+{
+  // Cloudflare Pages project for talkevents.ng. Static site: the build output
+  // in ./dist is uploaded as-is. No secrets belong in this file — set them in
+  // the Cloudflare dashboard or with `wrangler pages secret put <KEY>`.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "talkevents-web",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-10-01"
+}

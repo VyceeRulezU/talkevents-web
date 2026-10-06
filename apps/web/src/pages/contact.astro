@@ -5,7 +5,7 @@ import Section from '@/components/ui/Section.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import PageHero from '@/components/sections/PageHero.astro';
 import EnquiryForm from '@/components/sections/EnquiryForm.astro';
-import { mapHref, site } from '@/data/site';
+import { mapHref, site, whatsappHref } from '@/data/site';
 
 const { address } = site.contact;
 ---
@@ -35,6 +35,18 @@ const { address } = site.contact;
               <div>
                 <h3>Phone</h3>
                 <a href={site.contact.phoneHref}>{site.contact.phone}</a>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M4 20l1.3-4.2A8 8 0 1 1 8.3 19L4 20Z" />
+                <path d="M9.3 8.8c0 3 2.9 5.9 5.9 5.9l1-1.600-1.900-1-.9.9c-.9-.4-1.900-1.400-2.300-2.300l.9-.9-1-1.900-1.700.9Z" />
+              </svg>
+              <div>
+                <h3>WhatsApp</h3>
+                <a href={whatsappHref()} target="_blank" rel="noopener">
+                  Chat on {site.contact.phone} <span class="visually-hidden">(opens in a new tab)</span>
+                </a>
               </div>
             </li>
             <li>

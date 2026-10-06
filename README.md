@@ -266,16 +266,22 @@ packages/
 2. Change nameservers at **Whogohost** to Cloudflare's assigned nameservers.
 3. **Before switching DNS:** audit existing MX records so email is not broken.
 4. Set SSL mode to **Full (strict)**.
-5. Connect GitHub repo to Cloudflare Pages — build command: `npm run build`, output dir: `apps/web/dist`.
-6. Add environment variables in Cloudflare Pages settings.
-7. Add Search Console TXT verification via Cloudflare DNS.
+5. Connect the GitHub repo to Cloudflare Pages with these build settings:
+   - Production branch: `main`
+   - Root directory: `apps/web`
+   - Build command: `pnpm build`
+   - Build output directory: `dist`
+   - Node version comes from `apps/web/.node-version`.
+6. Add the custom domain `talkevents.ng` to the Pages project, then add a Redirect Rule sending `www.talkevents.ng` to the apex (301).
+7. Add environment variables in Cloudflare Pages settings.
+8. Add Search Console TXT verification via Cloudflare DNS, then submit `https://talkevents.ng/sitemap-index.xml`.
 
 ### Manual deploy
 
 ```bash
-npm install -g wrangler
 cd apps/web
-npx wrangler pages deploy dist
+pnpm build
+npx wrangler pages deploy
 ```
 
 ---
