@@ -7,7 +7,7 @@ import SectionHeading from '@/components/ui/SectionHeading.astro';
 // `scale` evens out the optical size: the round marks carry a lot of empty
 // canvas, so at the same height they read far smaller than the wordmarks.
 const partners = [
-  { name: 'NaliGrid', src: media('/images/partners/nali-grid.svg'), width: 3946, height: 1454, scale: 1 },
+  { name: 'NaliGrid', src: media('/images/partners/nali-grid.svg'), width: 3946, height: 1454, scale: 1, href: 'https://naligrid.com' },
   { name: 'Aliza Events', src: media('/images/partners/aliza-events.png'), width: 500, height: 500, scale: 1.9 },
   { name: 'Blue Velvet', src: media('/images/partners/blue-velvet.svg'), width: 244, height: 252, scale: 1.5 },
   { name: 'Qmara Vie Planners', src: media('/images/partners/qmara-vie-planners.png'), width: 808, height: 360, scale: 1.1 },
@@ -23,7 +23,14 @@ const partners = [
   <ul role="list" class="logo-strip__list">
     {partners.map((partner) => (
       <li class:list={['logo-strip__item', 'solid' in partner && 'logo-strip__item--solid']} style={`--logo-scale: ${partner.scale}`}>
-        <img src={partner.src} alt={partner.name} width={partner.width} height={partner.height} loading="lazy" decoding="async" />
+        {'href' in partner ? (
+          <a href={partner.href} target="_blank" rel="noopener" class="logo-strip__link">
+            <img src={partner.src} alt={partner.name} width={partner.width} height={partner.height} loading="lazy" decoding="async" />
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        ) : (
+          <img src={partner.src} alt={partner.name} width={partner.width} height={partner.height} loading="lazy" decoding="async" />
+        )}
       </li>
     ))}
   </ul>
@@ -62,8 +69,13 @@ const partners = [
     transition: opacity var(--duration-base) var(--ease-standard);
   }
 
-  .logo-strip__item:hover img {
+  .logo-strip__item:hover img,
+  .logo-strip__link:focus-visible img {
     opacity: 1;
+  }
+
+  .logo-strip__link {
+    display: flex;
   }
 
   .logo-strip__item--solid img {

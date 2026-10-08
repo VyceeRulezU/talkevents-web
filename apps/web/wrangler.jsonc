@@ -1,11 +1,12 @@
 {
-  // Cloudflare Worker serving talkevents.ng as static assets: the Astro build
-  // output in ./dist is uploaded as-is (no Worker script). Used both by the
-  // dashboard's Git builds and by `npx wrangler deploy` from this folder.
+  // Cloudflare Worker for talkevents.ng. The Astro build output in ./dist is
+  // served as static assets; worker/index.js runs for /api/* only. Used both
+  // by the dashboard's Git builds and by `npx wrangler deploy` from this folder.
   // No secrets belong in this file — set them in the Cloudflare dashboard or
-  // with `wrangler secret put <KEY>`.
+  // with `npx wrangler secret put <NAME>` (the names are listed in worker/index.js).
   "name": "talkevents-web",
   "compatibility_date": "2026-10-01",
+  "main": "./worker/index.js",
   // The live addresses. Cloudflare creates the DNS records and certificates.
   "routes": [
     { "pattern": "talkevents.ng", "custom_domain": true },
@@ -13,9 +14,14 @@
   ],
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
+    // Pages and files never touch the Worker; only the API does.
+    "run_worker_first": ["/api/*"],
     // /about is served from about.html; /about/ redirects to /about.
     "html_handling": "drop-trailing-slash",
     // Unknown paths get dist/404.html with a 404 status.
     "not_found_handling": "404-page"
-  }
+  },
+  // Keep a record of each alert attempt (Worker > Observability in the dashboard).
+  "observability": { "enabled": true }
 }
