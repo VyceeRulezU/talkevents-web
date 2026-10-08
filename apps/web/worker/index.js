@@ -1,5 +1,9 @@
 // The site's only server code. Cloudflare serves every page and file straight
-// from ./dist; this Worker runs for /api/* only (see wrangler.jsonc).
+// from ./dist; this Worker runs for /api/* and on a daily timer (wrangler.jsonc).
+//
+// Daily timer
+//   Calls the database's keep_alive() function so Supabase never pauses the
+//   project for inactivity. The result is logged (Worker > Observability).
 //
 // POST /api/enquiry-notify
 //   Called by the Supabase database each time a row is added to `enquiries`
@@ -125,7 +129,30 @@ async function notify(request, env) {
   return json({ ok: true, email, whatsapp });
 }
 
+/** Ask the database for the time. Any answer means it is awake. */
+async function keepAlive(env) {
+  if (!env.SUPABASE_URL || !env.SUPABASE_PUBLISHABLE_KEY) return 'skipped (Supabase is not configured)';
+  const response = await fetch(`${env.SUPABASE_URL}/rest/v1/rpc/keep_alive`, {
+    method: 'POST',
+    headers: {
+      apikey: env.SUPABASE_PUBLISHABLE_KEY,
+      authorization: `Bearer ${env.SUPABASE_PUBLISHABLE_KEY}`,
+      'content-type': 'application/json',
+    },
+    body: '{}',
+  });
+  return response.ok ? `database awake at ${await response.text()}` : `failed (${response.status})`;
+}
+
 export default {
+  async scheduled(controller, env, ctx) {
+    ctx.waitUntil(
+      keepAlive(env)
+        .catch(() => 'failed (could not reach Supabase)')
+        .then((result) => console.log(`keep-alive: ${result}`)),
+    );
+  },
+
   async fetch(request, env) {
     const { pathname } = new URL(request.url);
     if (pathname === '/api/enquiry-notify') return notify(request, env);

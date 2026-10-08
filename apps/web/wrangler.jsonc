@@ -7,6 +7,14 @@
   "name": "talkevents-web",
   "compatibility_date": "2026-10-01",
   "main": "./worker/index.js",
+  // Every day at 05:17 UTC the Worker pings the database so Supabase never
+  // pauses the project for inactivity (see `scheduled` in worker/index.js).
+  "triggers": { "crons": ["17 5 * * *"] },
+  // Public values, the same ones the website ships to the browser.
+  "vars": {
+    "SUPABASE_URL": "https://mwbzjqvnustgphxwlqyt.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_j5p9FjiQxccNAic54Y91TA_0sNRW2Oi"
+  },
   // The live addresses. Cloudflare creates the DNS records and certificates.
   "routes": [
     { "pattern": "talkevents.ng", "custom_domain": true },

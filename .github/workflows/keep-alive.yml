@@ -1,0 +1,49 @@
+name: Keep alive
+
+# Two jobs that have nothing to do with the code itself:
+#
+# 1. Supabase pauses a free project after a week without activity. This pings
+#    the database twice a week. (The Cloudflare Worker also pings it daily;
+#    this is the backup if that ever stops.)
+# 2. GitHub switches off scheduled workflows in a repository that has had no
+#    activity for 60 days. Once the site is finished there will be few
+#    commits, so each run re-enables this workflow, which resets that clock.
+#    No dummy commits are made.
+
+on:
+  schedule:
+    # Mondays and Thursdays, 06:23 UTC.
+    - cron: '23 6 * * 1,4'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+env:
+  # Both are public by design (they ship in the website's own code).
+  SUPABASE_URL: https://mwbzjqvnustgphxwlqyt.supabase.co
+  SUPABASE_PUBLISHABLE_KEY: sb_publishable_j5p9FjiQxccNAic54Y91TA_0sNRW2Oi
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Wake the Supabase database
+        run: |
+          reply=$(curl --silent --show-error --fail-with-body --max-time 30 \
+            --request POST "$SUPABASE_URL/rest/v1/rpc/keep_alive" \
+            --header "apikey: $SUPABASE_PUBLISHABLE_KEY" \
+            --header "Authorization: Bearer $SUPABASE_PUBLISHABLE_KEY" \
+            --header "Content-Type: application/json" \
+            --data '{}')
+          echo "Database answered: $reply"
+
+      - name: Check the website is up
+        run: curl --silent --show-error --fail --max-time 30 --output /dev/null https://talkevents.ng/
+
+      - name: Keep this schedule from being switched off
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method PUT "repos/${{ github.repository }}/actions/workflows/keep-alive.yml/enable"
