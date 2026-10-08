@@ -1,9 +1,11 @@
-import { founder, site } from '@/data/site';
+import { founder, premierChilling, site } from '@/data/site';
 
 const absolute = (path: string) => new URL(path, site.url).toString();
 /** Stable identifiers so the Person and the Organisation point at each other. */
 const organizationId = `${site.url}/#organization`;
 const founderId = `${absolute(founder.path)}#${founder.anchor}`;
+const premierChillingUrl = absolute(premierChilling.path);
+const premierChillingId = `${premierChillingUrl}#organization`;
 
 export function organizationSchema() {
   return {
@@ -52,7 +54,7 @@ export function founderSchema() {
       sameAs: founder.socials.map((social) => social.href),
       worksFor: [
         { '@type': 'Organization', '@id': organizationId, name: site.name, url: site.url },
-        { '@type': 'Organization', name: 'Premier Chilling Services' },
+        { '@type': 'Organization', '@id': premierChillingId, name: premierChilling.name, url: premierChillingUrl },
       ],
       knowsAbout: ['Event planning', 'Event coordination', 'Wedding planning', 'Corporate events'],
       workLocation: {
@@ -64,6 +66,45 @@ export function founderSchema() {
         },
       },
     },
+  };
+}
+
+/** Premier Chilling Services, for its own page (brand-name searches). */
+export function premierChillingSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': premierChillingId,
+    name: premierChilling.name,
+    alternateName: 'Premier Chilling',
+    slogan: premierChilling.slogan,
+    description: premierChilling.description,
+    url: premierChillingUrl,
+    logo: absolute(premierChilling.logo),
+    founder: { '@type': 'Person', '@id': founderId, name: founder.name },
+    areaServed: 'Abuja, Nigeria',
+    telephone: site.contact.phoneHref.replace('tel:', ''),
+    email: site.contact.email,
+    makesOffer: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Event cooling services',
+          description: 'Ice, chillers and cold storage for events, set up and managed on the day.',
+          url: `${premierChillingUrl}#cooling`,
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Event drinks services',
+          description: 'Drinks planning, supply points and service for events.',
+          url: `${premierChillingUrl}#drinks`,
+        },
+      },
+    ],
   };
 }
 

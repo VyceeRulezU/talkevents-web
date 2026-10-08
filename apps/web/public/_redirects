@@ -2,6 +2,9 @@
 # www -> apex is a domain-level redirect and is set in the Cloudflare
 # dashboard (Rules > Redirect Rules), not here.
 
+# Premier Chilling Services has its own page at /premier-chilling.
+/premier-chilling-services            /premier-chilling           301
+
 # Old service URLs used before the services lived on one page.
 /services/wedding-planning            /services#weddings          301
 /services/corporate-events            /services#corporate-events  301

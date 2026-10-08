@@ -1,0 +1,356 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Button from '@/components/ui/Button.astro';
+import LineIcon from '@/components/ui/LineIcon.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import { founder, premierChilling, site } from '@/data/site';
+import { premierChillingSchema } from '@/lib/schema';
+
+// Scope below is a draft built from what the client has said Premier Chilling
+// does (cooling and drinks services for events). [CONFIRM] each line.
+// Photos: temporary stock (Pexels, free-to-use license), no people.
+const services = [
+  {
+    id: 'cooling',
+    icon: 'snowflake',
+    heading: 'Cooling services',
+    body: 'Ice, chillers and cold storage planned around your guest numbers, your menu and your venue, set up before doors open and looked after until the last guest leaves.',
+    includes: [
+      'Ice supplied and topped up through the event',
+      'Chillers and cold storage on site',
+      'Quantities planned for your guest list',
+      'Set-up before your guests arrive',
+      'A team to manage it on the day',
+      'Clear-down when the event ends',
+    ],
+    image: { name: 'service-cooling-ice-bucket', alt: 'Bottles chilling in a large metal bucket of ice at an outdoor event' },
+  },
+  {
+    id: 'drinks',
+    icon: 'glass',
+    heading: 'Drinks services',
+    body: 'What to serve, how much of it, and how it reaches every table on time. You agree the menu and the budget; we work out the quantities, set up the service points and keep every glass filled.',
+    includes: [
+      'Drinks menu planned with you',
+      'Quantities worked out for your guest list',
+      'Bar and service points set up',
+      'Servers to keep every table supplied',
+      'Drinks kept cold from start to finish',
+      'Stock tracked through the event',
+    ],
+    image: { name: 'service-drinks-glasses', alt: 'Rows of filled glasses set out on a table ready to be served' },
+  },
+] as const;
+
+const steps = [
+  { title: 'Tell us about the event', body: 'Your date, venue, guest numbers and what you plan to serve.' },
+  { title: 'We plan the quantities', body: 'How much ice, cold storage and drink the day needs, agreed with you in advance.' },
+  { title: 'We set up early', body: 'Everything is in place and cold before your first guest arrives.' },
+  { title: 'We run it on the day', body: 'Our team keeps it stocked and chilled through the event, then clears down.' },
+];
+
+const occasions = ['Weddings and traditional ceremonies', 'Conferences and corporate events', 'Birthdays and milestone celebrations', 'Outdoor and garden events'];
+---
+
+<BaseLayout
+  title="Premier Chilling Services | Event Cooling & Drinks Services in Abuja"
+  description="Premier Chilling Services keeps events in Abuja perfectly chilled: ice, chillers, cold storage and drinks service, planned for your guest list and run on the day."
+  path="/premier-chilling"
+  imageAlt={`${premierChilling.name}: ${premierChilling.slogan}`}
+>
+  <JsonLd slot="head" schema={premierChillingSchema()} />
+
+  <PageHero eyebrow={premierChilling.name} title="Perfectly chilled, every time" />
+
+  <Section ariaLabel="About Premier Chilling Services">
+    <Container width="header">
+      <div class="pc-intro">
+        <div class="pc-intro__logo">
+          <img src={premierChilling.logo} alt={`${premierChilling.name} logo`} width="880" height="475" decoding="async" />
+        </div>
+        <div class="pc-intro__copy">
+          <SectionHeading eyebrow="Cooling and drinks for events" heading="Premier Chilling Services" />
+          <p>
+            Premier Chilling Services provides cooling and drinks services for events in Abuja. A warm
+            drink is the detail guests remember for the wrong reason, so we make sure it never
+            happens: everything is planned for your numbers, in place before doors open, and kept
+            cold until the event ends.
+          </p>
+          <p>
+            The company is led by <a href={`${founder.path}#${founder.anchor}`}>{founder.name}</a>, who
+            is also the CEO and Founder of {site.name}, and brings more than 12 years of experience in
+            the events industry. You can book Premier Chilling Services on its own, or as part of an
+            event planned by {site.name}.
+          </p>
+          <div class="pc-intro__actions">
+            <Button href="/book?type=something" variant="accent-subtle" arrow>Request a quote</Button>
+            <Button href={site.contact.phoneHref} variant="text">Call {site.contact.phone}</Button>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </Section>
+
+  {services.map((service, index) => (
+    <Section id={service.id} tint={index % 2 === 0} ariaLabel={service.heading} class="pc-section">
+      <Container width="header">
+        <div class:list={['pc-service', index % 2 === 1 && 'pc-service--flip']}>
+          <picture class="pc-service__media">
+            <source srcset={`/images/${service.image.name}.webp`} type="image/webp" />
+            <img src={`/images/${service.image.name}.jpg`} alt={service.image.alt} width="1200" height="800" loading="lazy" decoding="async" />
+          </picture>
+          <div class="pc-service__copy">
+            <span class="pc-service__icon"><LineIcon name={service.icon} /></span>
+            <SectionHeading heading={service.heading} />
+            <p>{service.body}</p>
+            <h3 class="pc-service__list-title">What is included</h3>
+            <ul role="list" class="pc-service__list">
+              {service.includes.map((item) => (
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                    <path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  ))}
+
+  <Section dark ariaLabel="How it works" class="surface-brand">
+    <Container width="header">
+      <SectionHeading eyebrow="How it works" heading="Cold from the first toast to the last guest" />
+      <ol role="list" class="pc-steps">
+        {steps.map((step, index) => (
+          <li class="pc-step">
+            <span class="pc-step__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <h3 class="pc-step__title">{step.title}</h3>
+            <p class="pc-step__body">{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </Container>
+  </Section>
+
+  <Section ariaLabel="Events we serve">
+    <Container width="header">
+      <div class="pc-occasions">
+        <SectionHeading eyebrow="Who it is for" heading="Any event where the drinks matter" />
+        <ul role="list" class="pc-occasions__list">
+          {occasions.map((occasion) => <li>{occasion}</li>)}
+        </ul>
+      </div>
+    </Container>
+  </Section>
+
+  <Section ariaLabel="Request a quote" class="section--flush">
+    <CtaBand
+      heading="Keep your event perfectly chilled"
+      body="Tell us your date, venue and guest numbers and we’ll come back with a plan and a quote."
+      cta={{ label: 'Request a quote', href: '/book?type=something' }}
+      image={{ name: 'service-cooling-ice-bucket', alt: 'Bottles chilling in a large metal bucket of ice at an outdoor event', width: 1200, height: 800 }}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  :global(.section--flush) {
+    padding-block: 0;
+  }
+
+  :global(.pc-section) {
+    scroll-margin-block-start: var(--header-height);
+  }
+
+  .pc-intro,
+  .pc-service {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .pc-intro__logo {
+    display: grid;
+    place-items: center;
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border-subtle);
+    background: var(--color-surface-card);
+  }
+
+  .pc-intro__logo img {
+    inline-size: 100%;
+    max-inline-size: 26rem;
+    block-size: auto;
+  }
+
+  .pc-intro__copy,
+  .pc-service__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    max-inline-size: var(--measure-prose);
+  }
+
+  .pc-intro__copy p,
+  .pc-service__copy p {
+    margin: 0;
+    line-height: var(--leading-relaxed);
+  }
+
+  .pc-intro__copy p a {
+    color: var(--color-text-link);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .pc-intro__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5);
+    margin-block-start: var(--space-2);
+  }
+
+  .pc-service__media {
+    position: relative;
+    display: block;
+    aspect-ratio: var(--aspect-hero);
+    overflow: hidden;
+  }
+
+  .pc-service__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pc-service__icon {
+    display: flex;
+    color: var(--color-brand-primary);
+    --icon-size: var(--space-7);
+  }
+
+  .pc-service__list-title {
+    margin: var(--space-3) 0 0;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .pc-service__list {
+    display: grid;
+    gap: var(--space-3) var(--space-6);
+    grid-template-columns: 1fr;
+    inline-size: 100%;
+    font-size: var(--text-sm);
+  }
+
+  .pc-service__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .pc-service__list svg {
+    flex-shrink: 0;
+    inline-size: var(--icon-size-sm);
+    block-size: var(--icon-size-sm);
+    color: var(--color-brand-accent-text);
+  }
+
+  .pc-steps {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+    margin-block-start: var(--space-7);
+  }
+
+  .pc-step {
+    padding-block-start: var(--space-5);
+    border-block-start: var(--border-width) solid var(--color-border-default);
+  }
+
+  .pc-step__number {
+    display: block;
+    margin-block-end: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    color: var(--color-brand-accent-text);
+  }
+
+  .pc-step__title {
+    margin: 0 0 var(--space-2);
+  }
+
+  .pc-step__body {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .pc-occasions {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .pc-occasions__list {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: 1fr;
+  }
+
+  .pc-occasions__list li {
+    padding: var(--space-4) var(--space-5);
+    border-inline-start: var(--border-width-strong) solid var(--color-brand-accent);
+    background: var(--color-surface-subtle);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+  }
+
+  @media (min-width: 40rem) {
+    .pc-service__list,
+    .pc-occasions__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .pc-steps {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .pc-intro {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: var(--space-9);
+    }
+
+    .pc-service {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: var(--space-9);
+    }
+
+    .pc-service--flip .pc-service__media {
+      order: 2;
+    }
+
+    .pc-occasions {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: var(--space-9);
+    }
+  }
+</style>

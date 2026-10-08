@@ -14,6 +14,6 @@
 /images/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
-# Preview deployments must not be indexed.
-https://:project.pages.dev/*
+# The workers.dev address and preview deployments must not be indexed.
+https://:worker.:account.workers.dev/*
   X-Robots-Tag: noindex

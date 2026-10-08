@@ -1,9 +1,16 @@
 {
-  // Cloudflare Pages project for talkevents.ng. Static site: the build output
-  // in ./dist is uploaded as-is. No secrets belong in this file — set them in
-  // the Cloudflare dashboard or with `wrangler pages secret put <KEY>`.
-  "$schema": "node_modules/wrangler/config-schema.json",
+  // Cloudflare Worker serving talkevents.ng as static assets: the Astro build
+  // output in ./dist is uploaded as-is (no Worker script). Used both by the
+  // dashboard's Git builds and by `npx wrangler deploy` from this folder.
+  // No secrets belong in this file — set them in the Cloudflare dashboard or
+  // with `wrangler secret put <KEY>`.
   "name": "talkevents-web",
-  "pages_build_output_dir": "./dist",
-  "compatibility_date": "2026-10-01"
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // /about is served from about.html; /about/ redirects to /about.
+    "html_handling": "drop-trailing-slash",
+    // Unknown paths get dist/404.html with a 404 status.
+    "not_found_handling": "404-page"
+  }
 }

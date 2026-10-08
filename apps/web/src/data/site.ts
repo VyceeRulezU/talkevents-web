@@ -57,6 +57,18 @@ export const founder = {
     'Pauline Okoye is the CEO and Founder of Talk Events, an event planning and coordination company in Abuja, Nigeria, and the CEO of Premier Chilling Services. She has more than 12 years of experience in the events industry.',
 } as const;
 
+// Sister company run by the founder. It has its own page on this site, which
+// is where a search for it should land; the cooling and drinks sections of the
+// services page link through to it.
+export const premierChilling = {
+  name: 'Premier Chilling Services',
+  slogan: 'Perfectly chilled, every time',
+  logo: '/images/partners/premier-chilling-services.png',
+  path: '/premier-chilling',
+  description:
+    'Premier Chilling Services provides cooling and drinks services for events in Abuja, Nigeria: ice, chillers, cold storage and drinks service. It is led by Pauline Okoye and works alongside Talk Events.',
+} as const;
+
 export type NavLink = {
   label: string;
   href: string;
@@ -81,6 +93,7 @@ export const footerNav: NavLink[] = [
   { label: 'Contact Us', href: '/contact' },
   { label: 'How we work', href: '/how-we-work' },
   { label: 'FAQ', href: '/faq' },
+  { label: 'Premier Chilling', href: '/premier-chilling' },
   { label: 'Book now', href: '/book' },
 ];
 

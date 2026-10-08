@@ -8,9 +8,9 @@ export default defineConfig({
   site: 'https://talkevents.ng',
   trailingSlash: 'never',
   compressHTML: true,
-  // Static build: Cloudflare Pages serves ./dist as-is (see wrangler.jsonc).
+  // Static build: Cloudflare serves ./dist as-is (see wrangler.jsonc).
   output: 'static',
-  // /about is built as about.html, which Cloudflare Pages serves at /about
+  // /about is built as about.html, which Cloudflare serves at /about
   // with no trailing-slash redirect, so it matches the canonical URLs.
   build: { format: 'file' },
   // Keep every script in its own file. The site's Content-Security-Policy
