@@ -22,6 +22,7 @@ import Footer from '@/components/layout/Footer.astro';
 import WhatsAppFab from '@/components/layout/WhatsAppFab.astro';
 import BackToTop from '@/components/layout/BackToTop.astro';
 import { organizationSchema, websiteSchema } from '@/lib/schema';
+import { mediaUrl } from '@/data/site';
 
 interface Props {
   title: string;
@@ -44,6 +45,7 @@ const { title, description, path, image, imageAlt, type, person, noindex } = Ast
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="google-site-verification" content="2CQ7u8Gr1m5XMuNH1wx8WRWJO7sTZqpc8R7o0M8tmfs" />
     <Seo title={title} description={description} path={path} image={image} imageAlt={imageAlt} type={type} person={person} noindex={noindex} />
+    <link rel="preconnect" href={mediaUrl} />
     <slot name="head" />
     <JsonLd schema={organizationSchema()} />
     <JsonLd schema={websiteSchema()} />

@@ -1,4 +1,5 @@
 ---
+import { media } from '@/data/site';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
 import Section from '@/components/ui/Section.astro';
@@ -101,8 +102,8 @@ const occasions = ['Weddings and traditional ceremonies', 'Conferences and corpo
       <Container width="header">
         <div class:list={['pc-service', index % 2 === 1 && 'pc-service--flip']}>
           <picture class="pc-service__media">
-            <source srcset={`/images/${service.image.name}.webp`} type="image/webp" />
-            <img src={`/images/${service.image.name}.jpg`} alt={service.image.alt} width="1200" height="800" loading="lazy" decoding="async" />
+            <source srcset={media(`/images/${service.image.name}.webp`)} type="image/webp" />
+            <img src={media(`/images/${service.image.name}.jpg`)} alt={service.image.alt} width="1200" height="800" loading="lazy" decoding="async" />
           </picture>
           <div class="pc-service__copy">
             <span class="pc-service__icon"><LineIcon name={service.icon} /></span>

@@ -1,4 +1,5 @@
 ---
+import { media } from '@/data/site';
 import Button from '@/components/ui/Button.astro';
 import Eyebrow from '@/components/ui/Eyebrow.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
@@ -44,8 +45,8 @@ const items = [
       {items.map((item) => (
         <li class="featured__item">
           <picture>
-            <source srcset={`/images/${item.name}.webp`} type="image/webp" />
-            <img src={`/images/${item.name}.jpg`} alt={item.alt} width="1000" height="667" loading="lazy" decoding="async" />
+            <source srcset={media(`/images/${item.name}.webp`)} type="image/webp" />
+            <img src={media(`/images/${item.name}.jpg`)} alt={item.alt} width="1000" height="667" loading="lazy" decoding="async" />
           </picture>
         </li>
       ))}

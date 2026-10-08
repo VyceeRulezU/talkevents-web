@@ -1,4 +1,5 @@
 ---
+import { media } from '@/data/site';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 
 interface Props {
@@ -43,8 +44,8 @@ const photos = grid ? [...rowPhotos, ...morePhotos] : rowPhotos;
       <li class="gallery__item">
         <button type="button" class="gallery__open" aria-label={`Open photo ${index + 1} of ${photos.length}`} data-gallery-open={index}>
           <picture>
-            <source srcset={`/images/${photo.name}.webp`} type="image/webp" />
-            <img src={`/images/${photo.name}.jpg`} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" decoding="async" />
+            <source srcset={media(`/images/${photo.name}.webp`)} type="image/webp" />
+            <img src={media(`/images/${photo.name}.jpg`)} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" decoding="async" />
           </picture>
         </button>
       </li>

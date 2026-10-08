@@ -1,6 +1,6 @@
 ---
 import Button from '@/components/ui/Button.astro';
-import { site, whatsappHref } from '@/data/site';
+import { site, supabase, whatsappHref } from '@/data/site';
 
 interface Props {
   /** `short`: one screen, for /contact. `steps`: the three-step booking flow on /book. */
@@ -20,6 +20,14 @@ const eventTypes = [
 
 const guestRanges = ['Up to 50', '50 to 150', '150 to 300', '300 to 500', 'More than 500', 'Not sure yet'];
 
+// Enquiries are saved to the Supabase `enquiries` table (see
+// supabase/migrations). Both values are public by design; site.ts holds the
+// live project's, and PUBLIC_SUPABASE_* variables can point a build elsewhere.
+// If the enquiry can't be saved, the form hands the visitor a pre-filled email.
+const supabaseUrl: string | undefined = import.meta.env.PUBLIC_SUPABASE_URL ?? supabase.url;
+const supabaseKey: string | undefined = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? supabase.publishableKey;
+const endpoint = supabaseUrl && supabaseKey ? `${supabaseUrl}/rest/v1/enquiries` : undefined;
+
 // WhatsApp is only offered once the client's number is confirmed in site.ts.
 const hasWhatsapp = !site.contact.whatsapp.startsWith('{{');
 ---
@@ -28,10 +36,12 @@ const hasWhatsapp = !site.contact.whatsapp.startsWith('{{');
   class:list={['enquiry', stepped && 'enquiry--steps']}
   id={id}
   method="post"
-  action="/api/v1/enquiry"
+  action="/contact"
   novalidate
   data-enquiry
   data-email={site.contact.email}
+  data-endpoint={endpoint}
+  data-key={endpoint ? supabaseKey : undefined}
 >
   {stepped && (
     <ol role="list" class="enquiry__progress" aria-label="Progress" data-enquiry-progress>
@@ -163,10 +173,9 @@ const hasWhatsapp = !site.contact.whatsapp.startsWith('{{');
 </form>
 
 <script>
-  // Progressive enhancement. Without JS the form is a plain POST with every
-  // fieldset visible. With JS: step-by-step on /book, inline validation, and a
-  // fetch submit. If the site can't deliver the enquiry, nothing typed is lost
-  // and the visitor is handed the same message ready to send by email.
+  // With JS: step-by-step on /book, inline validation, and the enquiry is saved
+  // to the database. If it can't be saved, nothing typed is lost and the
+  // visitor is handed the same message ready to send by email.
   for (const form of document.querySelectorAll<HTMLFormElement>('[data-enquiry]')) {
     const steps = [...form.querySelectorAll<HTMLFieldSetElement>('[data-enquiry-step]')];
     const progress = [...form.querySelectorAll<HTMLLIElement>('[data-enquiry-progress] li')];
@@ -295,16 +304,40 @@ const hasWhatsapp = !site.contact.whatsapp.startsWith('{{');
       const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
       if (submit) submit.disabled = true;
 
+      const field = (key: string) => String(data.get(key) ?? '').trim() || null;
+      const row = {
+        name: field('name'),
+        phone: field('phone'),
+        email: field('email'),
+        event_type: field('eventType'),
+        event_date: field('eventDate'),
+        guests: field('guests'),
+        area: field('area'),
+        budget: field('budget'),
+        message: field('message'),
+        marketing_consent: data.get('marketingConsent') === 'yes',
+        page: window.location.pathname,
+      };
+
       let delivered = false;
-      try {
-        const response = await fetch(form.action, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ ...Object.fromEntries(data), page: window.location.pathname }),
-        });
-        delivered = response.ok;
-      } catch {
-        delivered = false;
+      const { endpoint, key } = form.dataset;
+      if (endpoint && key) {
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              apikey: key,
+              Authorization: `Bearer ${key}`,
+              // The public may add rows but not read them back.
+              Prefer: 'return=minimal',
+            },
+            body: JSON.stringify(row),
+          });
+          delivered = response.ok;
+        } catch {
+          delivered = false;
+        }
       }
       if (submit) submit.disabled = false;
 

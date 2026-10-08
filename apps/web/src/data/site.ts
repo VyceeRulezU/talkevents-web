@@ -36,6 +36,24 @@ export const site = {
   },
 } as const;
 
+// Supabase project that stores enquiries. Both values are PUBLIC by design:
+// the publishable key ships in every visitor's browser and can only do what
+// the database rules allow (add an enquiry; never read one). The secret key
+// must never appear in this repo.
+export const supabase = {
+  url: 'https://mwbzjqvnustgphxwlqyt.supabase.co',
+  publishableKey: 'sb_publishable_j5p9FjiQxccNAic54Y91TA_0sNRW2Oi',
+} as const;
+
+// Photos, partner logos and other media are served from the R2 bucket, not
+// from this site's own files. Upload with `node scripts/upload-media.mjs`.
+export const mediaUrl = 'https://media.talkevents.ng';
+
+/** Full address of a file in the media bucket: media('/images/hero.webp'). */
+export function media(path: string): string {
+  return `${mediaUrl}/${path.replace(/^\//, '')}`;
+}
+
 // The founder, as search engines should know her. One source for the About
 // page copy, the Person structured data and the organisation's `founder`.
 export const founder = {
@@ -43,7 +61,7 @@ export const founder = {
   givenName: 'Pauline',
   familyName: 'Okoye',
   jobTitle: 'CEO and Founder',
-  image: '/images/team/pauline-okoye.webp',
+  image: media('/images/team/pauline-okoye.webp'),
   /** Where her profile lives on this site. */
   path: '/about',
   anchor: 'founder',
@@ -63,7 +81,7 @@ export const founder = {
 export const premierChilling = {
   name: 'Premier Chilling Services',
   slogan: 'Perfectly chilled, every time',
-  logo: '/images/partners/premier-chilling-services.png',
+  logo: media('/images/partners/premier-chilling-services.png'),
   path: '/premier-chilling',
   description:
     'Premier Chilling Services provides cooling and drinks services for events in Abuja, Nigeria: ice, chillers, cold storage and drinks service. It is led by Pauline Okoye and works alongside Talk Events.',

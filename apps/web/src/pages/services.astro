@@ -1,4 +1,5 @@
 ---
+import { media } from '@/data/site';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
 import Section from '@/components/ui/Section.astro';
@@ -144,9 +145,9 @@ const services = [
       <Container width="header">
         <div class:list={['service', index % 2 === 1 && 'service--flip']}>
           <picture class="service__media">
-            <source srcset={`/images/${service.image.name}.webp`} type="image/webp" />
+            <source srcset={media(`/images/${service.image.name}.webp`)} type="image/webp" />
             <img
-              src={`/images/${service.image.name}.jpg`}
+              src={media(`/images/${service.image.name}.jpg`)}
               alt={service.image.alt}
               width={service.image.width}
               height={service.image.height}

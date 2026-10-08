@@ -1,4 +1,5 @@
 ---
+import { media } from '@/data/site';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
 import Section from '@/components/ui/Section.astro';
@@ -70,9 +71,9 @@ const promises = [
           </p>
         </div>
         <picture class="about-intro__media">
-          <source srcset="/images/featured-warm-hall.webp" type="image/webp" />
+          <source srcset={media('/images/featured-warm-hall.webp')} type="image/webp" />
           <img
-            src="/images/featured-warm-hall.jpg"
+            src={media('/images/featured-warm-hall.jpg')}
             alt="A warmly lit hall of tables with gold satin chair sashes facing an illuminated head table"
             width="1000"
             height="667"
@@ -89,7 +90,7 @@ const promises = [
       <div class="founder">
         <figure class="founder__portrait">
           <img
-            src="/images/team/pauline-okoye.webp"
+            src={media('/images/team/pauline-okoye.webp')}
             alt="Pauline Okoye, CEO and Founder of Talk Events"
             width="480"
             height="480"

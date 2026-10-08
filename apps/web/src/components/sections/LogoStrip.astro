@@ -1,4 +1,5 @@
 ---
+import { media } from '@/data/site';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 
 // Logos supplied by the client. Only add a partner here with their written
@@ -6,13 +7,13 @@ import SectionHeading from '@/components/ui/SectionHeading.astro';
 // `scale` evens out the optical size: the round marks carry a lot of empty
 // canvas, so at the same height they read far smaller than the wordmarks.
 const partners = [
-  { name: 'NaliGrid', src: '/images/partners/nali-grid.svg', width: 3946, height: 1454, scale: 1 },
-  { name: 'Aliza Events', src: '/images/partners/aliza-events.png', width: 500, height: 500, scale: 1.9 },
-  { name: 'Blue Velvet', src: '/images/partners/blue-velvet.svg', width: 244, height: 252, scale: 1.5 },
-  { name: 'Qmara Vie Planners', src: '/images/partners/qmara-vie-planners.png', width: 808, height: 360, scale: 1.1 },
+  { name: 'NaliGrid', src: media('/images/partners/nali-grid.svg'), width: 3946, height: 1454, scale: 1 },
+  { name: 'Aliza Events', src: media('/images/partners/aliza-events.png'), width: 500, height: 500, scale: 1.9 },
+  { name: 'Blue Velvet', src: media('/images/partners/blue-velvet.svg'), width: 244, height: 252, scale: 1.5 },
+  { name: 'Qmara Vie Planners', src: media('/images/partners/qmara-vie-planners.png'), width: 808, height: 360, scale: 1.1 },
   // Solid artwork on a white ground: flattening it to one ink would leave a
   // blob, so it is greyed instead and its white ground is blended away.
-  { name: 'Premier Chilling Services', src: '/images/partners/premier-chilling-services.png', width: 880, height: 475, scale: 1.25, solid: true },
+  { name: 'Premier Chilling Services', src: media('/images/partners/premier-chilling-services.png'), width: 880, height: 475, scale: 1.25, solid: true },
 ];
 ---
 
