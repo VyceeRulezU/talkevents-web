@@ -3,47 +3,183 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
 import Section from '@/components/ui/Section.astro';
 import Button from '@/components/ui/Button.astro';
+import LineIcon from '@/components/ui/LineIcon.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import { primaryCta, site, whatsappHref } from '@/data/site';
+
+// Served by Cloudflare with a real 404 status for any unknown address
+// (wrangler.jsonc: not_found_handling). Kept out of search and the sitemap.
+const places = [
+  { href: '/services', icon: 'rings', title: 'Our services', body: 'Weddings, corporate events, celebrations, cooling, drinks and ushering.' },
+  { href: '/about', icon: 'botanical', title: 'About us', body: 'Meet Pauline Okoye and the team behind your plan.' },
+  { href: '/premier-chilling', icon: 'snowflake', title: 'Premier Chilling', body: 'Cooling and drinks services that keep every event perfectly chilled.' },
+  { href: '/contact', icon: 'calendar', title: 'Contact us', body: `Call ${site.contact.phone} or send us a message.` },
+] as const;
 ---
 
 <BaseLayout
   title="Page not found | Talk Events"
-  description="This page could not be found. Return to the Talk Events homepage."
+  description="This page could not be found. Find your way back to Talk Events, event planning and coordination in Abuja."
   path="/404"
   noindex
 >
-  <Section>
-    <Container width="narrow" class="not-found">
-      <p class="not-found__eyebrow">404</p>
-      <h1>We couldn&rsquo;t find that page</h1>
-      <p>
-        The page you're looking for may have moved. Head back home or get in touch and we'll point
-        you in the right direction.
-      </p>
-      <div class="not-found__actions">
-        <Button href="/">Back to home</Button>
-        <Button href="/contact" variant="text">Contact us</Button>
+  <PageHero eyebrow="Error 404" title="We couldn’t find that page" />
+
+  <Section ariaLabel="Find your way back">
+    <Container width="header">
+      <div class="not-found">
+        <div class="not-found__intro">
+          <p class="not-found__lede">
+            The page you were looking for may have moved, or the link may have a typo in it. Here are
+            the places most people are heading.
+          </p>
+          <div class="not-found__actions">
+            <Button href="/" variant="accent-subtle" arrow>Back to home</Button>
+            <Button href={primaryCta.href} variant="primary">{primaryCta.label}</Button>
+            <a class="not-found__whatsapp" href={whatsappHref()} target="_blank" rel="noopener">
+              Ask us on WhatsApp <span class="visually-hidden">(opens in a new tab)</span>
+            </a>
+          </div>
+        </div>
+
+        <ul role="list" class="not-found__places">
+          {places.map((place) => (
+            <li>
+              <a class="place" href={place.href}>
+                <span class="place__icon"><LineIcon name={place.icon} /></span>
+                <span class="place__title">{place.title}</span>
+                <span class="place__body">{place.body}</span>
+                <span class="place__go" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" focusable="false">
+                    <path d="M4 12h16m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </Container>
   </Section>
 </BaseLayout>
 
 <style>
-  :global(.not-found) {
-    text-align: center;
-    padding-block: var(--space-9);
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
   }
 
-  .not-found__eyebrow {
-    font-family: var(--font-display);
-    font-size: var(--text-3xl);
-    color: var(--color-brand-accent-text);
-    margin-block-end: var(--space-3);
+  .not-found__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    max-inline-size: var(--measure-prose);
+  }
+
+  .not-found__lede {
+    margin: 0;
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-muted);
   }
 
   .not-found__actions {
-    margin-block-start: var(--space-6);
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
     gap: var(--space-4);
+  }
+
+  .not-found__whatsapp {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap-target-min);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-link);
+    text-decoration: underline;
+    text-underline-offset: 0.4em;
+  }
+
+  .not-found__whatsapp:hover {
+    color: var(--color-text-link-hover);
+  }
+
+  .not-found__places {
+    display: grid;
+    gap: var(--grid-gap);
+    grid-template-columns: 1fr;
+  }
+
+  .place {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    block-size: 100%;
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border-subtle);
+    background: var(--color-surface-subtle);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      border-color var(--duration-base) var(--ease-standard),
+      box-shadow var(--duration-base) var(--ease-standard);
+  }
+
+  .place:hover,
+  .place:focus-visible {
+    border-color: var(--color-brand-primary);
+    box-shadow: var(--shadow-md);
+  }
+
+  .place__icon {
+    display: flex;
+    color: var(--color-brand-primary);
+    --icon-size: var(--space-7);
+  }
+
+  .place__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    color: var(--color-text-strong);
+  }
+
+  .place__body {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+  }
+
+  .place__go {
+    display: flex;
+    margin-block-start: auto;
+    padding-block-start: var(--space-3);
+    color: var(--color-brand-primary);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .place__go svg {
+    inline-size: var(--icon-size-sm);
+    block-size: var(--icon-size-sm);
+  }
+
+  .place:hover .place__go {
+    transform: translateX(var(--space-1));
+  }
+
+  @media (min-width: 40rem) {
+    .not-found__places {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .not-found__places {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 </style>
