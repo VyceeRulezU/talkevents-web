@@ -55,7 +55,7 @@ const hasWhatsapp = !site.contact.whatsapp.startsWith('{{');
 
   {stepped && (
     <fieldset class="enquiry__step" data-enquiry-step>
-      <legend class="enquiry__legend">What are you planning?</legend>
+      <legend class="enquiry__legend">What event are we coordinating?</legend>
       <div class="enquiry__choices">
         {eventTypes.map((type, index) => (
           <label class="choice">
@@ -114,7 +114,7 @@ const hasWhatsapp = !site.contact.whatsapp.startsWith('{{');
         <div class="field">
           <label for={`${id}-budget`}>Budget <span class="field__optional">(optional)</span></label>
           <input id={`${id}-budget`} name="budget" type="text" inputmode="text" autocomplete="off" aria-describedby={`${id}-budget-hint`} />
-          <p class="field__hint" id={`${id}-budget-hint`}>A rough figure in ₦ helps us suggest the right plan.</p>
+          <p class="field__hint" id={`${id}-budget-hint`}>A rough figure in ₦ helps us shape the right package.</p>
         </div>
       ) : (
         <div class="field">
@@ -141,7 +141,7 @@ const hasWhatsapp = !site.contact.whatsapp.startsWith('{{');
 
       <label class="check field--wide">
         <input type="checkbox" name="marketingConsent" value="yes" />
-        <span>Send me occasional planning tips and news from {site.name}.</span>
+        <span>Send me occasional event tips and news from {site.name}.</span>
       </label>
     </div>
   </fieldset>

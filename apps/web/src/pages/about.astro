@@ -18,7 +18,7 @@ import { founderSchema } from '@/lib/schema';
 const promises = [
   {
     icon: 'botanical',
-    title: 'A plan you can see',
+    title: 'A schedule you can see',
     body: 'The timeline, the vendor list and the budget are shared with you as they take shape. Nothing goes ahead until you have approved it.',
   },
   {
@@ -29,7 +29,7 @@ const promises = [
   {
     icon: 'bloom',
     title: 'Your money, treated with care',
-    body: 'We plan to the budget you set, show you where it is going, and flag a decision before it becomes a cost.',
+    body: 'We work to the budget you set, show you where it is going, and flag a decision before it becomes a cost.',
   },
   {
     icon: 'toast',
@@ -40,15 +40,15 @@ const promises = [
 ---
 
 <BaseLayout
-  title="Pauline Okoye, CEO & Founder of Talk Events | Abuja Event Planners"
-  description="Meet Pauline Okoye, CEO and Founder of Talk Events, the Abuja event planning and coordination company. Over 12 years in the events industry, leading a team of seven."
+  title="Pauline Okoye, CEO & Founder of Talk Events | Abuja Event Coordinators"
+  description="Meet Pauline Okoye, CEO and Founder of Talk Events, the Abuja event coordination company. Over 12 years in the events industry, leading a team of seven."
   path="/about"
   type="profile"
   person={founder}
 >
   <JsonLd slot="head" schema={founderSchema()} />
 
-  <PageHero eyebrow="About us" title="The people behind your plan" />
+  <PageHero eyebrow="About us" title="The people who run your day" />
 
   <Section ariaLabel="Who we are">
     <Container width="header">
@@ -56,9 +56,9 @@ const promises = [
         <div class="about-intro__copy">
           <SectionHeading eyebrow="Who we are" heading="An organised team for the days that matter" />
           <p>
-            Talk Events is an event planning and coordination company based in Maitama, Abuja. Led by
-            our founder, Pauline Okoye, and a team of seven, we plan and run weddings, corporate events
-            and celebrations across the city, built around one promise: your plan, perfectly executed.
+            Talk Events is an event coordination company based in Maitama, Abuja. Led by our founder,
+            Pauline Okoye, and a team of seven, we coordinate and run weddings, corporate events and
+            celebrations across the city, built around one promise: your plan, perfectly executed.
           </p>
           <p>
             Every event has a lot of moving parts: venues, vendors, guests, timings and money. Our job
@@ -66,7 +66,7 @@ const promises = [
             chasing, checking and coordinating to us.
           </p>
           <p>
-            We work in the open. You see the plan as it comes together, you approve what goes ahead,
+            We work in the open. You see the schedule as it comes together, you approve what goes ahead,
             and on the day the person running the room is someone you already know.
           </p>
         </div>
@@ -103,12 +103,12 @@ const promises = [
           <p class="founder__role">CEO and Founder, Talk Events</p>
           <p>
             Talk Events was founded by <strong>Pauline Okoye</strong>, who has spent more than 12 years
-            in the events industry. In that time she has planned and coordinated weddings, celebrations and
+            in the events industry. In that time she has coordinated weddings, celebrations and
             corporate occasions alongside some of the best-known names in the business, including
             Qmara Vie Planners and Blue Velvet.
           </p>
           <p>
-            That experience shapes how Talk Events works: a clear plan agreed early, vendors who know
+            That experience shapes how Talk Events works: a clear run-of-show agreed early, vendors who know
             exactly what is expected of them, and a calm, well-briefed team on the day. Pauline leads
             a team of seven who share that approach and stay with each client from the first
             conversation to the final clear-down.
@@ -183,7 +183,7 @@ const promises = [
     </Container>
   </Section>
 
-  <Section ariaLabel="Plan your event" class="section--flush">
+  <Section ariaLabel="Book your event" class="section--flush">
     <CtaBand />
   </Section>
 </BaseLayout>

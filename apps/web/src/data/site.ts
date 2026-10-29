@@ -8,7 +8,7 @@ export const site = {
   legalName: '{{PLACEHOLDER: legal name}}',
   url: 'https://talkevents.ng',
   description:
-    'Talk Events plans and coordinates weddings, corporate events and celebrations in Abuja, so your day runs exactly as planned.',
+    'Talk Events coordinates weddings, corporate events and celebrations in Abuja, so your day runs exactly as you imagined it.',
   locale: 'en-NG',
   // Brand blue (--color-brand-primary) for browser chrome; meta tags can't read CSS tokens.
   themeColor: '#1A3870',
@@ -72,7 +72,7 @@ export const founder = {
     { label: 'TikTok', href: 'https://www.tiktok.com/@pauline_okoye08', icon: 'tiktok' },
   ],
   description:
-    'Pauline Okoye is the CEO and Founder of Talk Events, an event planning and coordination company in Abuja, Nigeria, and the CEO of Premier Chilling Services. She has more than 12 years of experience in the events industry.',
+    'Pauline Okoye is the CEO and Founder of Talk Events, an event coordination company in Abuja, Nigeria, and the CEO of Premier Chilling Services. She has more than 12 years of experience in the events industry.',
 } as const;
 
 // Sister company run by the founder. It has its own page on this site, which
@@ -117,7 +117,7 @@ export const footerNav: NavLink[] = [
 
 // Candidate services per PRD §10 FR-S3 — [CONFIRM] with client before launch.
 export const serviceNav: NavLink[] = [
-  { label: 'Wedding planning', href: '/services#weddings' },
+  { label: 'Wedding coordination', href: '/services#weddings' },
   { label: 'Corporate events', href: '/services#corporate-events' },
   { label: 'Birthdays & milestones', href: '/services#celebrations' },
   { label: 'Cooling services', href: '/services#cooling' },
@@ -140,6 +140,6 @@ export const whatsappCtaLabel = 'Chat on WhatsApp';
 
 export function whatsappHref(prefill?: string): string {
   const number = site.contact.whatsapp.startsWith('{{') ? '' : site.contact.whatsapp;
-  const text = prefill ?? `Hi Talk Events, I'd like to plan an event.`;
+  const text = prefill ?? `Hi Talk Events, I'd like help coordinating an event.`;
   return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 }

@@ -17,15 +17,15 @@ const services = [
   {
     id: 'weddings',
     eyebrow: 'Weddings',
-    heading: 'Wedding planning and coordination',
+    heading: 'Wedding coordination',
     body: [
-      'Introduction, traditional wedding and white wedding, planned as one joined-up celebration or as separate days. We carry the plan from the first venue visit to the last dance, and keep both families working from the same page.',
+      'Introduction, traditional wedding and white wedding, coordinated as one joined-up celebration or as separate days. We take your plans from the first vendor call to the last dance, and keep both families working from the same page.',
       'Whether you want us beside you from the start or need a steady hand for the final weeks and the day itself, we shape the support around what you still have left to do.',
     ],
     includes: [
       'Venue search, visits and bookings',
       'Vendor sourcing, briefing and management',
-      'Budget planning and tracking',
+      'Budget tracking against what you set',
       'Guest logistics and aso ebi coordination',
       'Timeline, programme and rehearsal',
       'Full coordination on the day',
@@ -39,7 +39,7 @@ const services = [
     heading: 'Conferences, launches and company events',
     body: [
       'Conferences, product launches, award nights, retreats and staff events, delivered to your brief, your brand and your schedule. We handle the logistics so your team can focus on the content and the guests.',
-      'You get a clear plan up front, a single contact throughout, and an on-site team that keeps the programme running to time.',
+      'You get a clear run-of-show up front, a single contact throughout, and an on-site team that keeps the programme running to time.',
     ],
     includes: [
       'Venue sourcing and room layout',
@@ -58,7 +58,7 @@ const services = [
     heading: 'Birthdays and milestone celebrations',
     body: [
       'Milestone birthdays, naming ceremonies, anniversaries, send-forths and family celebrations. Tell us who you are celebrating and how you want the room to feel, and we will build the day around it.',
-      'From an intimate dinner to a full hall, the planning is the same: a clear programme, vendors who know their brief, and a team that sets up, runs the day and clears down.',
+      'From an intimate dinner to a full hall, the coordination is the same: a clear programme, vendors who know their brief, and a team that sets up, runs the day and clears down.',
     ],
     includes: [
       'Theme and styling direction',
@@ -78,12 +78,12 @@ const services = [
     partner: true,
     body: [
       'A warm drink is the detail guests remember for the wrong reason. Premier Chilling Services, our sister company, keeps everything cold from the first toast to the last guest.',
-      'The cooling is planned around your guest numbers, your menu and your venue, set up before doors open, and looked after through the event so your hosts never have to think about it.',
+      'The cooling is worked out around your guest numbers, your menu and your venue, set up before doors open, and looked after through the event so your hosts never have to think about it.',
     ],
     includes: [
       'Ice supplied and topped up through the event',
       'Chillers and cold storage on site',
-      'Quantities planned for your guest list',
+      'Quantities worked out for your guest list',
       'Set-up before your guests arrive',
       'A team to manage it on the day',
       'Clear-down when the event ends',
@@ -94,14 +94,14 @@ const services = [
   {
     id: 'drinks',
     eyebrow: 'Drinks services',
-    heading: 'Drinks planned, stocked and served',
+    heading: 'Drinks stocked, chilled and served',
     partner: true,
     body: [
-      'What to serve, how much of it, and how it reaches every table on time: we plan the drinks for your event with the same care as the rest of the day, and deliver the service with Premier Chilling Services.',
+      'What to serve, how much of it, and how it reaches every table on time: we handle the drinks for your event with the same care as the rest of the day, and deliver the service with Premier Chilling Services.',
       'You agree the menu and the budget. We work out the quantities, set up the service points and make sure nobody is left waiting with an empty glass.',
     ],
     includes: [
-      'Drinks menu planned with you',
+      'Drinks menu agreed with you',
       'Quantities worked out for your guest list',
       'Bar and service points set up',
       'Servers to keep every table supplied',
@@ -134,11 +134,11 @@ const services = [
 ---
 
 <BaseLayout
-  title="Event Planning, Cooling & Drinks Services in Abuja | Talk Events"
-  description="Wedding, corporate and celebration planning in Abuja by Talk Events, with cooling and drinks services from Premier Chilling Services, plus ushering."
+  title="Event Coordination, Cooling & Drinks Services in Abuja | Talk Events"
+  description="Wedding, corporate and celebration coordination in Abuja by Talk Events, with cooling and drinks services from Premier Chilling Services, plus ushering."
   path="/services"
 >
-  <PageHero eyebrow="What we do" title="Planning and coordination, end to end" />
+  <PageHero eyebrow="What we do" title="Event coordination, end to end" />
 
   {services.map((service, index) => (
     <Section id={service.id} tint={index % 2 === 1} ariaLabel={service.eyebrow} class="service-section">
@@ -179,7 +179,7 @@ const services = [
                 </li>
               ))}
             </ul>
-            <Button href={`/book?type=${service.type}`} variant="accent-subtle" arrow>Plan my event</Button>
+            <Button href={`/book?type=${service.type}`} variant="accent-subtle" arrow>Book this service</Button>
           </div>
         </div>
       </Container>
@@ -192,7 +192,7 @@ const services = [
     </Container>
   </Section>
 
-  <Section ariaLabel="Plan your event" class="section--flush">
+  <Section ariaLabel="Book your event" class="section--flush">
     <CtaBand />
   </Section>
 </BaseLayout>

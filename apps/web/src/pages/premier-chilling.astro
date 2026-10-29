@@ -20,11 +20,11 @@ const services = [
     id: 'cooling',
     icon: 'snowflake',
     heading: 'Cooling services',
-    body: 'Ice, chillers and cold storage planned around your guest numbers, your menu and your venue, set up before doors open and looked after until the last guest leaves.',
+    body: 'Ice, chillers and cold storage worked out around your guest numbers, your menu and your venue, set up before doors open and looked after until the last guest leaves.',
     includes: [
       'Ice supplied and topped up through the event',
       'Chillers and cold storage on site',
-      'Quantities planned for your guest list',
+      'Quantities worked out for your guest list',
       'Set-up before your guests arrive',
       'A team to manage it on the day',
       'Clear-down when the event ends',
@@ -37,7 +37,7 @@ const services = [
     heading: 'Drinks services',
     body: 'What to serve, how much of it, and how it reaches every table on time. You agree the menu and the budget; we work out the quantities, set up the service points and keep every glass filled.',
     includes: [
-      'Drinks menu planned with you',
+      'Drinks menu agreed with you',
       'Quantities worked out for your guest list',
       'Bar and service points set up',
       'Servers to keep every table supplied',
@@ -50,7 +50,7 @@ const services = [
 
 const steps = [
   { title: 'Tell us about the event', body: 'Your date, venue, guest numbers and what you plan to serve.' },
-  { title: 'We plan the quantities', body: 'How much ice, cold storage and drink the day needs, agreed with you in advance.' },
+  { title: 'We work out the quantities', body: 'How much ice, cold storage and drink the day needs, agreed with you in advance.' },
   { title: 'We set up early', body: 'Everything is in place and cold before your first guest arrives.' },
   { title: 'We run it on the day', body: 'Our team keeps it stocked and chilled through the event, then clears down.' },
 ];
@@ -60,7 +60,7 @@ const occasions = ['Weddings and traditional ceremonies', 'Conferences and corpo
 
 <BaseLayout
   title="Premier Chilling Services | Event Cooling & Drinks Services in Abuja"
-  description="Premier Chilling Services keeps events in Abuja perfectly chilled: ice, chillers, cold storage and drinks service, planned for your guest list and run on the day."
+  description="Premier Chilling Services keeps events in Abuja perfectly chilled: ice, chillers, cold storage and drinks service, sized to your guest list and run on the day."
   path="/premier-chilling"
   imageAlt={`${premierChilling.name}: ${premierChilling.slogan}`}
 >
@@ -79,14 +79,14 @@ const occasions = ['Weddings and traditional ceremonies', 'Conferences and corpo
           <p>
             Premier Chilling Services provides cooling and drinks services for events in Abuja. A warm
             drink is the detail guests remember for the wrong reason, so we make sure it never
-            happens: everything is planned for your numbers, in place before doors open, and kept
+            happens: everything is sized to your numbers, in place before doors open, and kept
             cold until the event ends.
           </p>
           <p>
             The company is led by <a href={`${founder.path}#${founder.anchor}`}>{founder.name}</a>, who
             is also the CEO and Founder of {site.name}, and brings more than 12 years of experience in
             the events industry. You can book Premier Chilling Services on its own, or as part of an
-            event planned by {site.name}.
+            event coordinated by {site.name}.
           </p>
           <div class="pc-intro__actions">
             <Button href="/book?type=something" variant="accent-subtle" arrow>Request a quote</Button>
@@ -155,7 +155,7 @@ const occasions = ['Weddings and traditional ceremonies', 'Conferences and corpo
   <Section ariaLabel="Request a quote" class="section--flush">
     <CtaBand
       heading="Keep your event perfectly chilled"
-      body="Tell us your date, venue and guest numbers and we’ll come back with a plan and a quote."
+      body="Tell us your date, venue and guest numbers and we’ll come back with a quote."
       cta={{ label: 'Request a quote', href: '/book?type=something' }}
       image={{ name: 'service-cooling-ice-bucket', alt: 'Bottles chilling in a large metal bucket of ice at an outdoor event', width: 1200, height: 800 }}
     />

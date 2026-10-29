@@ -56,7 +56,7 @@ export function founderSchema() {
         { '@type': 'Organization', '@id': organizationId, name: site.name, url: site.url },
         { '@type': 'Organization', '@id': premierChillingId, name: premierChilling.name, url: premierChillingUrl },
       ],
-      knowsAbout: ['Event planning', 'Event coordination', 'Wedding planning', 'Corporate events'],
+      knowsAbout: ['Event coordination', 'Wedding coordination', 'Corporate events', 'Event management'],
       workLocation: {
         '@type': 'Place',
         address: {
@@ -100,7 +100,7 @@ export function premierChillingSchema() {
         itemOffered: {
           '@type': 'Service',
           name: 'Event drinks services',
-          description: 'Drinks planning, supply points and service for events.',
+          description: 'Drinks supply, service points and service staff for events.',
           url: `${premierChillingUrl}#drinks`,
         },
       },
