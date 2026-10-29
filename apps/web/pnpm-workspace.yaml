@@ -1,3 +1,10 @@
+# apps/web is its own pnpm project (Cloudflare builds it with root directory
+# apps/web). pnpm 9, which Cloudflare's build image uses, refuses to install
+# when this file has no `packages` list, so the project lists itself.
+packages:
+  - '.'
+
+# pnpm 10+ only runs install scripts for packages listed here.
 allowBuilds:
   esbuild: true
   sharp: true
