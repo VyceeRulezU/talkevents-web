@@ -81,7 +81,8 @@ export const founder = {
 export const premierChilling = {
   name: 'Premier Chilling Services',
   slogan: 'Perfectly chilled, every time',
-  logo: media('/images/partners/premier-chilling-services.png'),
+  // Transparent version: the original file has a white box around the mark.
+  logo: media('/images/partners/premier-chilling-services-transparent.png'),
   path: '/premier-chilling',
   description:
     'Premier Chilling Services provides cooling and drinks services for events in Abuja, Nigeria: ice, chillers, cold storage and drinks service. It is led by Pauline Okoye and works alongside Talk Events.',
