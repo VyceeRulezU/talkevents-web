@@ -139,7 +139,8 @@ async function keepAlive(env) {
       authorization: `Bearer ${env.SUPABASE_PUBLISHABLE_KEY}`,
       'content-type': 'application/json',
     },
-    body: '{}',
+    // Each call writes a row (supabase/migrations/…_keep_alive_writes.sql).
+    body: JSON.stringify({ source: 'cloudflare' }),
   });
   return response.ok ? `database awake at ${await response.text()}` : `failed (${response.status})`;
 }
